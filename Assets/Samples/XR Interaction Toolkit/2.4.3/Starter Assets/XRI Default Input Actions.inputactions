@@ -2197,6 +2197,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Calibration",
+            "id": "c945130d-88ad-458b-8d7e-8fd8c5956743",
+            "actions": [
+                {
+                    "name": "CalibrationRight",
+                    "type": "Button",
+                    "id": "33922724-a76b-46c5-9503-7628ce8f7ccf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CalibrationLeft",
+                    "type": "Button",
+                    "id": "12bb8207-ceb1-4d43-ae1b-652a9732ea56",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0bbf3918-ba50-49de-93f1-0405c2b061aa",
+                    "path": "<XRController>{RightHand}/triggerPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CalibrationRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3df2a25b-7848-4f2f-80a4-bdcbdb62f539",
+                    "path": "<XRController>{LeftHand}/triggerPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CalibrationLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
