@@ -11,15 +11,17 @@ public class PhysicsGrabable : Grabable
     [SerializeField] private Rigidbody rigidbodyComponent;
 
     [Header("Throw settings")]
-    [SerializeField] private float throwSpeedMultiplier = 5.0f;
-    [SerializeField] private int frameAverageDivider = 10;
+    [SerializeField] private float throwSpeedMultiplier = 1.0f;
+    [SerializeField] private float frameAverageDivider = 0.1f;
 
 
 
     public NetworkVariable<bool> grabEnabled = new NetworkVariable<bool>(true);
     public NetworkVariable<bool> isGrabbed = new NetworkVariable<bool>(false);
+    private bool isGrabbedLocal = false;
     private NetworkVariable<bool> thrownGiveBackToServer = new NetworkVariable<bool>(false);
-    public NetworkVariable<ulong> ownerId = new NetworkVariable<ulong>(0);
+    private bool thrownGiveBackToServerLocal = false;
+    public NetworkVariable<ulong> ownerClientId = new NetworkVariable<ulong>(0);
 
     private GameObject lastHand;
     private Vector3 GrabbedVelocity = Vector3.zero;
@@ -35,6 +37,8 @@ public class PhysicsGrabable : Grabable
             return false;
         }
 
+        isGrabbedLocal = true;
+        thrownGiveBackToServerLocal = false;
         GrabGetOwnershipServerRpc();
         rigidbodyComponent.isKinematic = true;
         lastHand = Hand;
@@ -49,7 +53,7 @@ public class PhysicsGrabable : Grabable
 
     public override void OnRelease()
     {
-        if (!isGrabbed.Value)
+        if (!isGrabbed.Value && !isGrabbedLocal)
         {
             return;
         }
@@ -58,9 +62,8 @@ public class PhysicsGrabable : Grabable
         rigidbodyComponent.velocity = GrabbedVelocity * throwSpeedMultiplier;
         rigidbodyComponent.angularVelocity = GrabbedAngularVelocity;
 
-        print("Release");
-        print("velocity: " + rigidbodyComponent.velocity + "   angularVelocity: " + rigidbodyComponent.angularVelocity);
-
+        isGrabbedLocal = false;
+        thrownGiveBackToServerLocal = true;
         ReleaseServerRpc();
     }
 
@@ -68,18 +71,22 @@ public class PhysicsGrabable : Grabable
     [ServerRpc(RequireOwnership = false)]
     private void GrabGetOwnershipServerRpc(ServerRpcParams rpcParams = default)
     {
-        isGrabbed.Value = true;
         thrownGiveBackToServer.Value = false;
+        thrownGiveBackToServerLocal = false;
         // Set ownership to this client
-        ownerId.Value = rpcParams.Receive.SenderClientId;
+        ownerClientId.Value = rpcParams.Receive.SenderClientId;
         networkObject.ChangeOwnership(rpcParams.Receive.SenderClientId);
+        isGrabbed.Value = true;
+        isGrabbedLocal = true;
     }
 
     [ServerRpc]
     private void ReleaseServerRpc(ServerRpcParams rpcParams = default)
     {
         isGrabbed.Value = false;
+        isGrabbedLocal = false;
         thrownGiveBackToServer.Value = true;
+        thrownGiveBackToServerLocal = true;
     }
 
     [ServerRpc]
@@ -87,13 +94,10 @@ public class PhysicsGrabable : Grabable
     {
         // Set ownership to server
         networkObject.ChangeOwnership(0);
-        ownerId.Value = 0;
+        ownerClientId.Value = 0;
         thrownGiveBackToServer.Value = false;
-        rigidbodyComponent.isKinematic = true;
-        rigidbodyComponent.isKinematic = false;
-        rigidbodyComponent.velocity = Vector3.zero;
+        thrownGiveBackToServerLocal = false;
     }
-
 
 
     void Update()
@@ -103,8 +107,10 @@ public class PhysicsGrabable : Grabable
 
     private void UpdateGrabbableTransform()
     {
-        // if object is grabbed by local player
-        if (isGrabbed.Value && ownerId.Value == NetworkManager.Singleton.LocalClientId)
+        if (isGrabbedLocal != isGrabbed.Value)
+        {
+            // don't doo anything
+        } else if (isGrabbed.Value && isGrabbedLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
         {
             // update position and rotation
             transform.position = lastHand.transform.position;
@@ -115,18 +121,19 @@ public class PhysicsGrabable : Grabable
             Vector3 velocity = (transform.position - lastPosition) / Time.deltaTime;
             Vector3 angularVelocity = (transform.rotation.eulerAngles - lastRotation) / Time.deltaTime;
 
-            GrabbedVelocity = (GrabbedVelocity + velocity) / frameAverageDivider;
-            GrabbedAngularVelocity = (GrabbedAngularVelocity + angularVelocity) / frameAverageDivider;
+            GrabbedVelocity = frameAverageDivider * velocity + (1 - frameAverageDivider) * GrabbedVelocity;
+            GrabbedAngularVelocity = frameAverageDivider * angularVelocity + (1 - frameAverageDivider) * GrabbedAngularVelocity;
             
             lastPosition = transform.position;
             lastRotation = transform.rotation.eulerAngles;
 
-        } else if (thrownGiveBackToServer.Value && ownerId.Value == NetworkManager.Singleton.LocalClientId)
+        } else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
         {
             // if object is thrown, should be given back to server when it stops moving
-            if (rigidbodyComponent.velocity.magnitude < 0.01f && rigidbodyComponent.angularVelocity.magnitude < 0.01f)
+            if (rigidbodyComponent.velocity.magnitude < 0.0001f && rigidbodyComponent.angularVelocity.magnitude < 0.0001f)
             {
                 print("Return ownership");
+                thrownGiveBackToServerLocal = false;
                 ReturnOwnershipServerRpc();
             }
         }

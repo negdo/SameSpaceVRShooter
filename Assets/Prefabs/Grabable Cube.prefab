@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3453026051
+  GlobalObjectIdHash: 3686591244
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -208,7 +208,7 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
-  Interpolate: 1
+  Interpolate: 0
   SlerpPosition: 0
 --- !u!114 &2041018138797877642
 MonoBehaviour:
@@ -224,13 +224,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkObject: {fileID: 8864645988466775743}
   rigidbodyComponent: {fileID: 7308307093769391190}
-  throwSpeedMultiplier: 5
-  frameAverageDivider: 10
+  throwSpeedMultiplier: 1
+  frameAverageDivider: 0.1
   grabEnabled:
     m_InternalValue: 1
   isGrabbed:
     m_InternalValue: 0
-  ownerId:
+  ownerClientId:
     m_InternalValue: 0
 --- !u!65 &2647365499001966329
 BoxCollider:
