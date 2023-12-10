@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.OpenXR.Input;
 
 public class Interactor : MonoBehaviour
 {
     [Header("Actions")]
     [SerializeField] private InputActionReference grabAction;
-    [SerializeField] private InputActionReference releaseAction;
     [SerializeField] private InputActionReference primaryAction;
     [SerializeField] private InputActionReference secondaryAction;
 
     [Header("Grab Settings")]
-    [SerializeField] private float grabRadius = 0.1f;
+    [SerializeField] private float grabRadius = 3.0f;
+
+    [SerializeField] private XRBaseController controllerDevice;
 
 
 
@@ -40,17 +42,24 @@ public class Interactor : MonoBehaviour
             Grabable grabable = other.GetComponent<Grabable>();
             if (grabable != null)
             {
-                HapticFeedbackInArea();
+                HapticFeedbackOutArea();
             }
         }
     }
 
     private void OnGrabAction()
     {
+        print("Grab action");
         // get colliders in area
         Collider[] colliders = Physics.OverlapSphere(transform.position, grabRadius);
+        Debug.Log("position: " + transform.position + "   radius: " + grabRadius);
+        Debug.Log("colliders: " + colliders.Length);
+
+
         foreach (Collider collider in colliders)
         {
+            Debug.Log(collider);
+
             Grabable grabable = collider.GetComponent<Grabable>();
             if (grabable != null)
             {
@@ -58,7 +67,7 @@ public class Interactor : MonoBehaviour
                 {
                     lastGrabable = grabable;
                     isGrabbing = true;
-                    HapticFeedbackInArea();
+                    HapticFeedbackGrab();
                     break;
                 }
             }
@@ -76,35 +85,45 @@ public class Interactor : MonoBehaviour
 
     private void OnPrimaryAction()
     {
-        if (isGrabbing)
-        {
-            lastGrabable.OnPrimaryAction();
-        }
+        if (isGrabbing) { lastGrabable.OnPrimaryAction(); }
     }
 
     private void OnSecondaryAction()
     {
-        if (isGrabbing)
-        {
-            lastGrabable.OnSecondaryAction();
-        }
+        if (isGrabbing) { lastGrabable.OnSecondaryAction(); }
     }
 
+
+    // Haptic Feedback to controller
     private void HapticFeedbackInArea()
     {
         float intensity = 0.5f;
         float duration = 0.1f;
-        float frequency = 0.5f;
+
+        controllerDevice.SendHapticImpulse(intensity, duration);
+    }
+
+    private void HapticFeedbackOutArea()
+    {
+        float intensity = 0.2f;
+        float duration = 0.1f;
+
+        controllerDevice.SendHapticImpulse(intensity, duration);
+    }
+
+    private void HapticFeedbackGrab()
+    {
+        float intensity = 1.0f;
+        float duration = 0.2f;
+
+        controllerDevice.SendHapticImpulse(intensity, duration);
     }
 
     private void Awake()
     {
-        // set action callbacks
         grabAction.action.performed += _ => OnGrabAction();
-        releaseAction.action.performed += _ => OnReleaseAction();
+        grabAction.action.canceled += _ => OnReleaseAction();
         primaryAction.action.performed += _ => OnPrimaryAction();
         secondaryAction.action.performed += _ => OnSecondaryAction();
-
     }
-
 }

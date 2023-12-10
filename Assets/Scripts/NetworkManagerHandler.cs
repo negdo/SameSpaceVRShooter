@@ -14,12 +14,24 @@ public class NetworkManagerHandler : MonoBehaviour
 
         if (SceneLoader.isHost)
         {
-            transport.ConnectionData.Address = "0.0.0.0";
-            Debug.Log("Starting host");
-            NetworkManager.Singleton.StartHost();
+            if (SceneLoader.isServer)
+            {
+                // Dedicated server
+                transport.ConnectionData.Address = "0.0.0.0";
+                Debug.Log("Starting server");
+                NetworkManager.Singleton.StartServer();
+            }
+            else
+            {
+                // Host on a player
+                transport.ConnectionData.Address = "0.0.0.0";
+                Debug.Log("Starting host");
+                NetworkManager.Singleton.StartHost();
+            }
         }
         else
         {
+            // Client
             Debug.Log("Starting client");
             NetworkManager.Singleton.StartClient();
         }

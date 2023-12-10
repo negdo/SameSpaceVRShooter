@@ -12,7 +12,7 @@ public class ServerLaunchManager : MonoBehaviour
     {
         if (isServer)
         {
-            SceneLoader.LoadMultiplayerSceneHost();
+            SceneLoader.LoadMultiplayerSceneServer();
             XRGeneralSettings.Instance.Manager.DeinitializeLoader();
         }
     }

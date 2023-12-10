@@ -9,6 +9,7 @@ public class SceneLoader : MonoBehaviour
 
     public static string host_ip = "";
     public static bool isHost = false;
+    public static bool isServer = false;
 
     private Vector3 playerPositionCalibration = new Vector3(0, 0, 0);
     private Quaternion playerRotationCalibration = new Quaternion(0, 0, 0, 0);
@@ -32,6 +33,14 @@ public class SceneLoader : MonoBehaviour
         CalibrationPositionHolder calibrationPositionHolder = FindObjectOfType<CalibrationPositionHolder>();
         calibrationPositionHolder.updatePlayerPosition();
 
+        SceneManager.LoadScene("MultiplayerScene");
+    }
+
+    public static void LoadMultiplayerSceneServer()
+    {
+        Debug.Log("Loading Multiplayer Scene as Server");
+        isHost = true;
+        isServer = true;
         SceneManager.LoadScene("MultiplayerScene");
     }
 }
