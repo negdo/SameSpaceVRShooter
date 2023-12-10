@@ -12,8 +12,8 @@ public class ServerLaunchManager : MonoBehaviour
     {
         if (isServer)
         {
+            SceneLoader.LoadMultiplayerSceneHost();
             XRGeneralSettings.Instance.Manager.DeinitializeLoader();
-            SceneLoader.instance.LoadMultiplayerSceneHost();
         }
     }
 }

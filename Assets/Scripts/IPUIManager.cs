@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class IPUIManager : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class IPUIManager : MonoBehaviour
             foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
             {
                 all_interfaces_ip += ip.ToString() + "\n";
-                Debug.Log(ip.Address.ToString());
+                //Debug.Log(ip.Address.ToString());
 
                 // if ip address is of shape xxxx.xxxx.xxxx.xxxx regex
                 if (System.Text.RegularExpressions.Regex.IsMatch(ip.Address.ToString(), @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"))
@@ -37,6 +38,7 @@ public class IPUIManager : MonoBehaviour
                     {
                         if (ip.Address.ToString().StartsWith("192"))
                         {
+                            Debug.Log("My IP Address: " + ip.Address.ToString());
                             return ip.Address.ToString();
                         }
                     }
@@ -49,6 +51,6 @@ public class IPUIManager : MonoBehaviour
 
     public void UpdateSceneLoaderIP()
     {
-        SceneLoader.host_ip = "192.168.1." + inputServerIP.text;
+        SceneLoader.host_ip = inputServerIP.text;
     }
 }

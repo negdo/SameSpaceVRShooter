@@ -13,7 +13,7 @@ public class SceneLoader : MonoBehaviour
     private Vector3 playerPositionCalibration = new Vector3(0, 0, 0);
     private Quaternion playerRotationCalibration = new Quaternion(0, 0, 0, 0);
 
-    public void LoadMultiplayerSceneHost()
+    public static void LoadMultiplayerSceneHost()
     {
         Debug.Log("Loading Multiplayer Scene as Host");
         isHost = true;
@@ -24,7 +24,7 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("MultiplayerScene");
     }
 
-    public void LoadMultiplayerSceneClient()
+    public static void LoadMultiplayerSceneClient()
     {
         Debug.Log("Loading Multiplayer Scene as Client");
         isHost = false;
