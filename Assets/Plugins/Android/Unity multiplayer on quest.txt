@@ -1,0 +1,7 @@
+Unity multiplayer on quest
+- custom manifest
+- v player settingsih kej?
+- v XR settingsih android custom manifest
+- zamenjat port network managerja
+- network address to 0.0.0.0
+- projectsettings > XR plugin management > openXR > Android tab > click a tiny cogwheel > remove Force Remove Internet Permission checkbox

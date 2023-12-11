@@ -10,7 +10,7 @@ public class NetworkManagerHandler : MonoBehaviour
 
     void Start()
     {
-        transport.ConnectionData.Address = SceneLoader.host_ip;
+        
 
         if (SceneLoader.isHost)
         {
@@ -32,6 +32,7 @@ public class NetworkManagerHandler : MonoBehaviour
         else
         {
             // Client
+            transport.ConnectionData.Address = SceneLoader.host_ip;
             Debug.Log("Starting client");
             NetworkManager.Singleton.StartClient();
         }
