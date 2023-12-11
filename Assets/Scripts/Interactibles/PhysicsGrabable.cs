@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class PhysicsGrabable : Grabable
@@ -18,7 +17,7 @@ public class PhysicsGrabable : Grabable
 
     public NetworkVariable<bool> grabEnabled = new NetworkVariable<bool>(true);
     public NetworkVariable<bool> isGrabbed = new NetworkVariable<bool>(false);
-    private bool isGrabbedLocal = false;
+    protected bool isGrabbedLocal = false;
     private NetworkVariable<bool> thrownGiveBackToServer = new NetworkVariable<bool>(false);
     private bool thrownGiveBackToServerLocal = false;
     public NetworkVariable<ulong> ownerClientId = new NetworkVariable<ulong>(0);
@@ -107,10 +106,13 @@ public class PhysicsGrabable : Grabable
 
     private void UpdateGrabbableTransform()
     {
+
         if (isGrabbedLocal != isGrabbed.Value)
         {
             // don't doo anything
-        } else if (isGrabbed.Value && isGrabbedLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
+            print("Grabbed local not the same");
+        }
+        else if (isGrabbed.Value && isGrabbedLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
         {
             // update position and rotation
             transform.position = lastHand.transform.position;
@@ -123,11 +125,12 @@ public class PhysicsGrabable : Grabable
 
             GrabbedVelocity = frameAverageDivider * velocity + (1 - frameAverageDivider) * GrabbedVelocity;
             GrabbedAngularVelocity = frameAverageDivider * angularVelocity + (1 - frameAverageDivider) * GrabbedAngularVelocity;
-            
+
             lastPosition = transform.position;
             lastRotation = transform.rotation.eulerAngles;
 
-        } else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
+        }
+        else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
         {
             // if object is thrown, should be given back to server when it stops moving
             if (rigidbodyComponent.velocity.magnitude < 0.0001f && rigidbodyComponent.angularVelocity.magnitude < 0.0001f)
@@ -136,6 +139,25 @@ public class PhysicsGrabable : Grabable
                 thrownGiveBackToServerLocal = false;
                 ReturnOwnershipServerRpc();
             }
+        }
+    }
+
+
+    public override void OnLostOwnership()
+    {
+        updateOtherClientsKinematic();
+    }
+
+    public override void OnGainedOwnership()
+    {
+        updateOtherClientsKinematic();
+    }
+
+    private void updateOtherClientsKinematic()
+    {
+        if (!IsOwner)
+        {
+            rigidbodyComponent.isKinematic = true;
         }
     }
 }
