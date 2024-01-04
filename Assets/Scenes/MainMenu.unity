@@ -282,7 +282,6 @@ GameObject:
   - component: {fileID: 123744691}
   - component: {fileID: 123744690}
   - component: {fileID: 123744689}
-  - component: {fileID: 123744688}
   - component: {fileID: 123744687}
   m_Layer: 5
   m_Name: 7
@@ -326,24 +325,6 @@ MonoBehaviour:
   keyChannel: {fileID: 11400000, guid: 707903675feb07f42bda5f7de5dbe878, type: 2}
   keyboard: {fileID: 1750190037}
   character: 7
---- !u!114 &123744688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123744685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b3638c2f5db5b479ff24c2859713d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PokeFollowTransform: {fileID: 476340979}
-  m_SmoothingSpeed: 16
-  m_ReturnToInitialPosition: 1
-  m_ApplyIfChildIsTarget: 1
-  m_ClampToMaxDistance: 1
-  m_MaxDistance: 6
 --- !u!114 &123744689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -823,7 +804,6 @@ GameObject:
   - component: {fileID: 189960484}
   - component: {fileID: 189960483}
   - component: {fileID: 189960482}
-  - component: {fileID: 189960481}
   - component: {fileID: 189960480}
   m_Layer: 5
   m_Name: 8
@@ -867,24 +847,6 @@ MonoBehaviour:
   keyChannel: {fileID: 11400000, guid: 707903675feb07f42bda5f7de5dbe878, type: 2}
   keyboard: {fileID: 1750190037}
   character: 8
---- !u!114 &189960481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189960478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b3638c2f5db5b479ff24c2859713d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PokeFollowTransform: {fileID: 107196317}
-  m_SmoothingSpeed: 16
-  m_ReturnToInitialPosition: 1
-  m_ApplyIfChildIsTarget: 1
-  m_ClampToMaxDistance: 1
-  m_MaxDistance: 6
 --- !u!114 &189960482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2157,6 +2119,7 @@ GameObject:
   - component: {fileID: 595869472}
   - component: {fileID: 595869471}
   - component: {fileID: 595869470}
+  - component: {fileID: 595869474}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -2206,7 +2169,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 3c7e8ac550cd5334bb4dd4d9db002891, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2251,6 +2214,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &595869474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595869469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac95ef7f4f3815419a5c7dc13cf8e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedObject: {fileID: 500442353}
+  material: {fileID: 2100000, guid: 3c7e8ac550cd5334bb4dd4d9db002891, type: 2}
 --- !u!1 &638311087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2444,7 +2421,6 @@ GameObject:
   - component: {fileID: 825781463}
   - component: {fileID: 825781462}
   - component: {fileID: 825781461}
-  - component: {fileID: 825781460}
   - component: {fileID: 825781459}
   m_Layer: 5
   m_Name: 0
@@ -2488,24 +2464,6 @@ MonoBehaviour:
   keyChannel: {fileID: 11400000, guid: 707903675feb07f42bda5f7de5dbe878, type: 2}
   keyboard: {fileID: 1750190037}
   character: 0
---- !u!114 &825781460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 825781457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b3638c2f5db5b479ff24c2859713d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PokeFollowTransform: {fileID: 906370644}
-  m_SmoothingSpeed: 16
-  m_ReturnToInitialPosition: 1
-  m_ApplyIfChildIsTarget: 1
-  m_ClampToMaxDistance: 1
-  m_MaxDistance: 6
 --- !u!114 &825781461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4744,7 +4702,6 @@ GameObject:
   - component: {fileID: 1549306706}
   - component: {fileID: 1549306705}
   - component: {fileID: 1549306704}
-  - component: {fileID: 1549306703}
   - component: {fileID: 1549306702}
   m_Layer: 5
   m_Name: 9
@@ -4788,24 +4745,6 @@ MonoBehaviour:
   keyChannel: {fileID: 11400000, guid: 707903675feb07f42bda5f7de5dbe878, type: 2}
   keyboard: {fileID: 1750190037}
   character: 9
---- !u!114 &1549306703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549306700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b3638c2f5db5b479ff24c2859713d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PokeFollowTransform: {fileID: 1521148621}
-  m_SmoothingSpeed: 16
-  m_ReturnToInitialPosition: 1
-  m_ApplyIfChildIsTarget: 1
-  m_ClampToMaxDistance: 1
-  m_MaxDistance: 6
 --- !u!114 &1549306704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5388,7 +5327,12 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3484128599580066371, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+    - {fileID: 3484128598335533760, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+    - {fileID: 3484128599544185632, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+    - {fileID: 3484128599842371482, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+    - {fileID: 3484128599298449735, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3484128599267958349, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
     - {fileID: 3484128598359551129, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
@@ -5649,7 +5593,6 @@ GameObject:
   - component: {fileID: 2000676364}
   - component: {fileID: 2000676363}
   - component: {fileID: 2000676362}
-  - component: {fileID: 2000676361}
   - component: {fileID: 2000676360}
   m_Layer: 5
   m_Name: 6
@@ -5693,24 +5636,6 @@ MonoBehaviour:
   keyChannel: {fileID: 11400000, guid: 707903675feb07f42bda5f7de5dbe878, type: 2}
   keyboard: {fileID: 1750190037}
   character: 6
---- !u!114 &2000676361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000676358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b3638c2f5db5b479ff24c2859713d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PokeFollowTransform: {fileID: 1215528457}
-  m_SmoothingSpeed: 16
-  m_ReturnToInitialPosition: 1
-  m_ApplyIfChildIsTarget: 1
-  m_ClampToMaxDistance: 1
-  m_MaxDistance: 6
 --- !u!114 &2000676362
 MonoBehaviour:
   m_ObjectHideFlags: 0
