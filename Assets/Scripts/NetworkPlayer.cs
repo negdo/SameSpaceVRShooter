@@ -11,6 +11,22 @@ public class NetworkPlayer : NetworkBehaviour
     [SerializeField] Transform leftHand;
     [SerializeField] Transform rightHand;
 
+
+    private float maxHealth = 100;
+    public NetworkVariable<float> health = new NetworkVariable<float>();
+
+    private void Start()
+    {
+
+        if (!IsOwner)
+        {
+            gameObject.tag = "EnemyPlayer";
+        }
+
+        health.Value = 100;
+
+    }
+
     void Update()
     {
         if (IsOwner)
@@ -26,6 +42,24 @@ public class NetworkPlayer : NetworkBehaviour
 
             rightHand.position = VRRigReferences.Singelton.rightHand.position;
             rightHand.rotation = VRRigReferences.Singelton.rightHand.rotation * Quaternion.Euler(45, 0, 0);
+        }
+
+        if (health.Value <= 0)
+        {
+            Debug.Log("Player died");
+        }
+    }
+
+    public void BuuletHit(Vector3 position, Quaternion rotation, float damage)
+    {
+        // shake camera
+
+
+        // remove health
+        if (IsOwner)
+        {
+            health.Value -= damage;
+            Debug.Log("Health: " + health.Value);
         }
     }
 }

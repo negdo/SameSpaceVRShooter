@@ -8,7 +8,7 @@ public class HandGun : PhysicsGrabable
     [Header("Bullet")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
-    [SerializeField] private float bulletSpeed = 100.0f;
+    [SerializeField] private float bulletSpeed;
 
     public override void OnPrimaryAction()
     {
@@ -33,10 +33,6 @@ public class HandGun : PhysicsGrabable
     {
         GameObject spawnedObject = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         spawnedObject.GetComponent<NetworkObject>().Spawn();
-        spawnedObject.GetComponent<Bullet>().speed = bulletSpeed;
-
-
-
-
+        spawnedObject.GetComponent<Bullet>().speed.Value = bulletSpeed;
     }
 }

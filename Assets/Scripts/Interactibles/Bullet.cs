@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
-    public float speed;
+    public NetworkVariable<float> speed = new NetworkVariable<float>();
+
     private float lifeTime = 3f;
 
 
@@ -15,8 +17,25 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.Translate(GetMovement(Time.deltaTime));
 
         lifeTime -= Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Bullet hit: " + other.gameObject.name);
+
+
+        if (IsOwner)
+        {
+            gameObject.GetComponent<NetworkObject>().Despawn(true);
+            Destroy(gameObject);
+        }
+    }
+
+    public Vector3 GetMovement(float deltaTime)
+    {
+        return Vector3.forward * speed.Value * deltaTime;
     }
 }

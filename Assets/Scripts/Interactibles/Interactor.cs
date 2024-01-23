@@ -52,13 +52,10 @@ public class Interactor : MonoBehaviour
         print("Grab action");
         // get colliders in area
         Collider[] colliders = Physics.OverlapSphere(transform.position, grabRadius);
-        Debug.Log("position: " + transform.position + "   radius: " + grabRadius);
-        Debug.Log("colliders: " + colliders.Length);
 
 
         foreach (Collider collider in colliders)
         {
-            Debug.Log(collider);
 
             Grabable grabable = collider.GetComponent<Grabable>();
             if (grabable != null)
