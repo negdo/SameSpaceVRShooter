@@ -57,8 +57,6 @@ public class Bullet : NetworkBehaviour
                 networkPlayer.BulletHit(gameObject.transform, damage);
             }
 
-
-
             gameObject.GetComponent<NetworkObject>().Despawn(true);
             Destroy(gameObject);
         }
