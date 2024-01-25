@@ -71,11 +71,13 @@ public class NetworkPlayer : NetworkBehaviour
 
 
         // remove health
-        if (IsOwner)
-        {
-            health.Value -= damage;
-            Debug.Log("Health: " + health.Value);
-        }
+        SubtractHealthServerRpc(damage);
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    public void SubtractHealthServerRpc(float damage)
+    {
+        this.health.Value -= damage;
     }
 
     public float GetHealth()
