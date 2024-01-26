@@ -54,7 +54,8 @@ public class NetworkPlayer : NetworkBehaviour
             }
             averageHeadPosition /= recentHeadPositions.Count;
 
-            body.position = averageHeadPosition - new Vector3(0, 0.4f, 0);
+
+            body.position = averageHeadPosition - new Vector3(0, 0.2f, 0);
             body.rotation = Quaternion.Euler(0, VRRigReferences.Singelton.head.rotation.eulerAngles.y, 0);
 
         }

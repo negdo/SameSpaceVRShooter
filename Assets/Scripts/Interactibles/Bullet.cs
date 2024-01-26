@@ -31,7 +31,7 @@ public class Bullet : NetworkBehaviour
         Debug.Log("Bullet hit: " + other.gameObject.name);
 
         GameObject explosionHit = Instantiate(explosionHitPrefab, transform.position, Quaternion.identity);
-        explosionHit.transform.localScale = Vector3.one * 0.05f;
+        explosionHit.transform.localScale = Vector3.one * 0.13f;
 
 
         if (IsOwner)

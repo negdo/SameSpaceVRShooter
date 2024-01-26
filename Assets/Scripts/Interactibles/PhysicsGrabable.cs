@@ -26,7 +26,7 @@ public class PhysicsGrabable : Grabable
     private Vector3 GrabbedVelocity = Vector3.zero;
     private Vector3 GrabbedAngularVelocity = Vector3.zero;
     private Vector3 lastPosition;
-    private Vector3 lastRotation;
+    private Quaternion lastRotation;
 
 
     public override bool OnGrab(GameObject Hand)
@@ -42,7 +42,7 @@ public class PhysicsGrabable : Grabable
         rigidbodyComponent.isKinematic = true;
         lastHand = Hand;
         lastPosition = transform.position;
-        lastRotation = transform.rotation.eulerAngles;
+        lastRotation = transform.rotation;
         GrabbedVelocity = Vector3.zero;
         GrabbedAngularVelocity = Vector3.zero;
 
@@ -121,13 +121,17 @@ public class PhysicsGrabable : Grabable
 
             // average velocity over last frames to smooth out throwing
             Vector3 velocity = (transform.position - lastPosition) / Time.deltaTime;
-            Vector3 angularVelocity = (transform.rotation.eulerAngles - lastRotation) / Time.deltaTime;
+            //Vector3 angularVelocity = (transform.rotation.eulerAngles - lastRotation) / Time.deltaTime;
+            Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(lastRotation);
+            Vector3 angularVelocity = deltaRotation.eulerAngles / Time.deltaTime;
 
             GrabbedVelocity = frameAverageDivider * velocity + (1 - frameAverageDivider) * GrabbedVelocity;
             GrabbedAngularVelocity = frameAverageDivider * angularVelocity + (1 - frameAverageDivider) * GrabbedAngularVelocity;
 
+
             lastPosition = transform.position;
-            lastRotation = transform.rotation.eulerAngles;
+            lastRotation = transform.rotation;
+
 
         }
         else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
