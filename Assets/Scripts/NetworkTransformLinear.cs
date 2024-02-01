@@ -18,7 +18,7 @@ public class NetworkTransformLinear : NetworkTransform
     
 
     
-    protected override void Update()
+    /*protected override void Update()
     {
         if (IsOwner)
         {
@@ -27,7 +27,7 @@ public class NetworkTransformLinear : NetworkTransform
         else
         {
             // move the object
-            transform.Translate(bullet.GetMovement(Time.deltaTime));
+            //transform.Translate(bullet.GetMovement(Time.deltaTime));
         }
-    }
+    }*/
 }

@@ -24,10 +24,6 @@ namespace Keyboard
     {
         [Header("Keyboard Setup")]
         [SerializeField] private KeyChannel keyChannel;
-        [SerializeField] private Button spacebarButton;
-        [SerializeField] private Button speechButton;
-        [SerializeField] private Button deleteButton;
-        [SerializeField] private Button switchButton;
 
         private TextMeshProUGUI switchButtonText;
         
@@ -36,13 +32,9 @@ namespace Keyboard
 
         [Header("Shift/Caps Lock Button")] 
         [SerializeField] internal bool autoCapsAtStart = true;
-        [SerializeField] private Button shiftButton;
         [SerializeField] private Image buttonImage;
         [SerializeField] private Sprite defaultSprite;
         [SerializeField] private Sprite activeSprite;
-        
-        [Header("Switch Number/Special Button")]
-        [SerializeField] private Button switchNumberSpecialButton;
 
         private TextMeshProUGUI switchNumSpecButtonText;
         
@@ -109,39 +101,6 @@ namespace Keyboard
     
         }
 
-        private void OnSpacePress()
-        {
-            int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
-            int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
-
-            outputField.text = outputField.text.Remove(startPos, endPos - startPos);
-            outputField.text = outputField.text.Insert(startPos, " ");
-
-            outputField.selectionAnchorPosition = outputField.selectionFocusPosition = startPos + 1;
-            
-            CheckTextLength();
-        }
-
-        private void OnDeletePress()
-        {
-            if (string.IsNullOrEmpty(outputField.text)) return;
-            int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
-            int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
-
-            if (endPos > startPos)
-            {
-                outputField.text = outputField.text.Remove(startPos, endPos - startPos);
-                outputField.selectionAnchorPosition = outputField.selectionFocusPosition = startPos;
-            }
-            else if (startPos > 0)
-            {
-                outputField.text = outputField.text.Remove(startPos - 1, 1);
-                outputField.selectionAnchorPosition = outputField.selectionFocusPosition = startPos - 1;
-            }
-            
-            CheckTextLength();
-        }
-
         private void CheckTextLength()
         {
             int currentLength = outputField.text.Length;
@@ -157,34 +116,6 @@ namespace Keyboard
         }
 
 
-        private void OnShiftPress()
-        {
-            if (capsLockActive)
-            {
-                // If Caps Lock is active, deactivate it
-                capsLockActive = false;
-                shiftActive = false;
-            }
-            else switch (shiftActive)
-            {
-                case true when !keyHasBeenPressed && Time.time - lastShiftClickTime < shiftDoubleClickDelay:
-                    // If Shift is active, a key has not been pressed, and Shift button was double clicked, activate Caps Lock
-                    capsLockActive = true;
-                    shiftActive = false;
-                    break;
-                case true when !keyHasBeenPressed:
-                    // If Shift is active, a key has not been pressed, deactivate Shift
-                    shiftActive = false;
-                    break;
-                case false:
-                    // If Shift is not active and Shift button was clicked once, activate Shift
-                    shiftActive = true;
-                    break;
-            }
-
-            lastShiftClickTime = Time.time;
-            onKeyboardModeChanged?.Invoke();
-        }
 
         private void ActivateShift()
         {

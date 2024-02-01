@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3446039658
+  GlobalObjectIdHash: 3876898663
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8393bc8f958a3dd4fbc2aa7afa82a23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed:
-    m_InternalValue: 0
+  selfPrefabPoolNumber: 0
   explosionHitPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
+  selfPrefab: {fileID: 2862668420837030742}
 --- !u!114 &8685163490817396490
 MonoBehaviour:
   m_ObjectHideFlags: 0

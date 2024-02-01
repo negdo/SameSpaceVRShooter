@@ -1,29 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class Bullet : NetworkBehaviour
 {
-    public NetworkVariable<float> speed = new NetworkVariable<float>();
+    private NetworkVariable<float> speed = new NetworkVariable<float>(10f);
 
     private float lifeTime = 3f;
     private float damage = 10f;
     private float explosionRadius = 0.1f;
 
+    [SerializeField] private int selfPrefabPoolNumber;
     [SerializeField] private GameObject explosionHitPrefab;
+
+    private void Start()
+    {
+        if (IsClient)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void OnEnable()
+    {
+        if (IsServer)
+        {
+            lifeTime = 3f;
+        }
+    }
 
 
     void Update()
     {
-        if (lifeTime <= 0)
+        if (IsServer)
         {
-            Destroy(gameObject);
+            if (lifeTime <= 0)
+            {
+                DestroyBullet();
+            }
+            lifeTime -= Time.deltaTime;
+
+            transform.Translate(GetMovement(Time.deltaTime));
         }
+    }
 
-        transform.Translate(GetMovement(Time.deltaTime));
-
-        lifeTime -= Time.deltaTime;
+    void DestroyBullet()
+    {
+        NetworkObjectPool.Singleton.ReturnNetworkObject(gameObject.GetComponent<NetworkObject>(), selfPrefabPoolNumber);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,7 +59,7 @@ public class Bullet : NetworkBehaviour
         explosionHit.transform.localScale = Vector3.one * 0.13f;
 
 
-        if (IsOwner)
+        if (IsServer)
         {
             // check all colliders in radius
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
@@ -57,14 +82,25 @@ public class Bullet : NetworkBehaviour
                 networkPlayer.BulletHit(gameObject.transform, damage);
             }
 
-            gameObject.GetComponent<NetworkObject>().Despawn(true);
-            Destroy(gameObject);
+            DestroyBullet();
         }
     }
 
 
-    public Vector3 GetMovement(float deltaTime)
+    private Vector3 GetMovement(float deltaTime)
     {
         return Vector3.forward * speed.Value * deltaTime;
+    }
+
+    [ClientRpc]
+    public void EnableOnClientRpc()
+    {
+        gameObject.SetActive(true);
+    }
+
+    [ClientRpc]
+    public void DisableOnClientRpc()
+    {
+        gameObject.SetActive(false);
     }
 }
