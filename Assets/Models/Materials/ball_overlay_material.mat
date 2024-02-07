@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Reactivegrid
-  m_Shader: {fileID: -6465566751694194690, guid: d0063d1aca6817c499170f5d80b12e0f, type: 3}
+  m_Name: ball_overlay_material
+  m_Shader: {fileID: -6465566751694194690, guid: 22b7dfdc512ad0843a2cdacc352638ad, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,13 +37,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _cell_size: 0.25
+    - _AlphaValue: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - ObjectPosition: {r: 0, g: 1.55, b: 0, a: 0}
-    - _ObjectPosition: {r: -0.03841225, g: 1.1315075, b: 0.04289037, a: 0}
-    - _Object_Position: {r: 0, g: 1.5, b: 0, a: 0}
+    - _Input_minmax: {r: 0.135, g: 0.55, b: 0, a: 0}
+    - _Output_minmax: {r: 0, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &2559667596355048457
+--- !u!114 &75432286986113080
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

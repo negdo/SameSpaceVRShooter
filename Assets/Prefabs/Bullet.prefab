@@ -93,8 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 296915422604525708}
   - component: {fileID: 6754200746375010469}
-  - component: {fileID: 1842688666856849182}
   - component: {fileID: 8685163490817396490}
+  - component: {fileID: 4606000928512158397}
   - component: {fileID: 4825548322671143306}
   - component: {fileID: -6406003888969211059}
   m_Layer: 0
@@ -140,21 +140,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1842688666856849182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2862668420837030742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8393bc8f958a3dd4fbc2aa7afa82a23f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selfPrefabPoolNumber: 0
-  explosionHitPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
-  selfPrefab: {fileID: 2862668420837030742}
 --- !u!114 &8685163490817396490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +170,20 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 0
   SlerpPosition: 0
+--- !u!114 &4606000928512158397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2862668420837030742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d0d1e8d8ef5be2498bebc80c1d3837b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfPrefabPoolNumber: 0
+  explosionHitPrefab: {fileID: 4021103657954561961, guid: 0208b0243d40e5c4d8188e7584b1b943, type: 3}
 --- !u!135 &4825548322671143306
 SphereCollider:
   m_ObjectHideFlags: 0

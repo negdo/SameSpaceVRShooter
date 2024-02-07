@@ -21,7 +21,9 @@ public class NetworkPlayer : NetworkBehaviour
 
     private void Start()
     {
-        health.Value = 100;
+        if (IsServer) {
+            health.Value = 100;
+        }
     }
 
     void Update()

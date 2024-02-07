@@ -96,6 +96,8 @@ public class PhysicsGrabable : Grabable
         ownerClientId.Value = 0;
         thrownGiveBackToServer.Value = false;
         thrownGiveBackToServerLocal = false;
+
+        rigidbodyComponent.isKinematic = false;
     }
 
 

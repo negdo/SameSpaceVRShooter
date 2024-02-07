@@ -176,6 +176,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Settings",
+            "id": "d8393e40-62c1-44ae-9748-c6828bcff086",
+            "actions": [
+                {
+                    "name": "Settings button press",
+                    "type": "Button",
+                    "id": "a6f10684-bac2-4dea-ae0e-893960571f5e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "72b04290-01e5-4ce7-9538-05b0b01893a9",
+                    "path": "<XRController>{LeftHand}/{MenuButton}",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Settings button press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
