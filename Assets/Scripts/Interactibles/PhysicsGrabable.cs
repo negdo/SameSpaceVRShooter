@@ -130,7 +130,6 @@ public class PhysicsGrabable : Grabable
             GrabbedVelocity = frameAverageDivider * velocity + (1 - frameAverageDivider) * GrabbedVelocity;
             GrabbedAngularVelocity = frameAverageDivider * angularVelocity + (1 - frameAverageDivider) * GrabbedAngularVelocity;
 
-
             lastPosition = transform.position;
             lastRotation = transform.rotation;
 
@@ -139,9 +138,7 @@ public class PhysicsGrabable : Grabable
         else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
         {
             // if object is thrown, should be given back to server when it stops moving
-            if (rigidbodyComponent.velocity.magnitude < 0.0001f && rigidbodyComponent.angularVelocity.magnitude < 0.0001f)
-            {
-                print("Return ownership");
+            if (rigidbodyComponent.velocity.magnitude < 0.0001f && rigidbodyComponent.angularVelocity.magnitude < 0.0001f) {
                 thrownGiveBackToServerLocal = false;
                 ReturnOwnershipServerRpc();
             }

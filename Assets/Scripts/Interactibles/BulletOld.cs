@@ -15,29 +15,24 @@ public class Bullet : NetworkBehaviour
     [SerializeField] private int selfPrefabPoolNumber;
     [SerializeField] private GameObject explosionHitPrefab;
 
-    private void Start()
-    {
-        if (IsClient)
-        {
+    private void Start() {
+        // for network object pool
+        if (IsClient) {
             gameObject.SetActive(false);
         }
     }
 
-    public void OnEnable()
-    {
-        if (IsServer)
-        {
+    public void OnEnable() {
+        // reset status when bullet is enabled from pool
+        if (IsServer) {
             lifeTime = 3f;
         }
     }
 
 
-    void Update()
-    {
-        if (IsServer)
-        {
-            if (lifeTime <= 0)
-            {
+    void Update() {
+        if (IsServer) {
+            if (lifeTime <= 0) {
                 DestroyBullet();
             }
             lifeTime -= Time.deltaTime;
@@ -46,21 +41,20 @@ public class Bullet : NetworkBehaviour
         }
     }
 
-    void DestroyBullet()
-    {
+    void DestroyBullet() {
+        // return bullet to pool
         NetworkObjectPool.Singleton.ReturnNetworkObject(gameObject.GetComponent<NetworkObject>(), selfPrefabPoolNumber);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
+    private void OnTriggerEnter(Collider other) {
         Debug.Log("Bullet hit: " + other.gameObject.name);
 
         GameObject explosionHit = Instantiate(explosionHitPrefab, transform.position, Quaternion.identity);
         explosionHit.transform.localScale = Vector3.one * 0.13f;
 
+        if (IsServer) {
 
-        if (IsServer)
-        {
+            
             // check all colliders in radius
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
             HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();

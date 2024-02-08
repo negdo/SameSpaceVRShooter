@@ -47,7 +47,7 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    private void OnGrabAction()
+    private void OnGrabAction(InputAction.CallbackContext obj)
     {
         print("Grab action");
         // get colliders in area
@@ -71,7 +71,7 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    private void OnReleaseAction()
+    private void OnReleaseAction(InputAction.CallbackContext obj)
     {
         if (isGrabbing)
         {
@@ -80,12 +80,12 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    private void OnPrimaryAction()
+    private void OnPrimaryAction(InputAction.CallbackContext obj)
     {
         if (isGrabbing) { lastGrabable.OnPrimaryAction(); }
     }
 
-    private void OnSecondaryAction()
+    private void OnSecondaryAction(InputAction.CallbackContext obj)
     {
         if (isGrabbing) { lastGrabable.OnSecondaryAction(); }
     }
@@ -118,9 +118,17 @@ public class Interactor : MonoBehaviour
 
     private void Awake()
     {
-        grabAction.action.performed += _ => OnGrabAction();
-        grabAction.action.canceled += _ => OnReleaseAction();
-        primaryAction.action.performed += _ => OnPrimaryAction();
-        secondaryAction.action.performed += _ => OnSecondaryAction();
+        grabAction.action.performed += OnGrabAction;
+        grabAction.action.canceled += OnReleaseAction;
+        primaryAction.action.performed += OnPrimaryAction;
+        secondaryAction.action.performed += OnSecondaryAction;
+    }
+
+    private void OnDestroy()
+    {
+        grabAction.action.performed -= OnGrabAction;
+        grabAction.action.canceled -= OnReleaseAction;
+        primaryAction.action.performed -= OnPrimaryAction;
+        secondaryAction.action.performed -= OnSecondaryAction;
     }
 }

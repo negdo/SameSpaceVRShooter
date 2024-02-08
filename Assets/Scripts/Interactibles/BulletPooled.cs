@@ -25,7 +25,7 @@ public class BulletPooled : NetworkPooledObject, IMovement {
     }
 
     protected override void UpdateState() {
-        if (lifeTime <= 0){
+        if (lifeTime <= 0) {
             ReturnToPool();
         }
         lifeTime -= Time.deltaTime;
@@ -43,8 +43,9 @@ public class BulletPooled : NetworkPooledObject, IMovement {
             HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
 
             foreach (Collider hit in colliders) {
-                if (hit.gameObject.TryGetComponent(out NetworkPlayer player)) {
-                    hitPlayers.Add(player);
+                NetworkPlayer hitPlayer = hit.gameObject.GetComponentInParent<NetworkPlayer>();
+                if (hitPlayer != null) {
+                    hitPlayers.Add(hitPlayer);
                 }
             }
 
