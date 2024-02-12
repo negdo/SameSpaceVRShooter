@@ -25,18 +25,12 @@ namespace Keyboard
         [Header("Keyboard Setup")]
         [SerializeField] private KeyChannel keyChannel;
 
-        private TextMeshProUGUI switchButtonText;
-        
-        [Header("Keyboards")]
-        [SerializeField] private GameObject numbersKeyboard;
-
         [Header("Shift/Caps Lock Button")] 
         [SerializeField] internal bool autoCapsAtStart = true;
         [SerializeField] private Image buttonImage;
         [SerializeField] private Sprite defaultSprite;
         [SerializeField] private Sprite activeSprite;
 
-        private TextMeshProUGUI switchNumSpecButtonText;
         
         [Header("Keyboard Button Colors")]
         [SerializeField] private Color normalColor = Color.black;
@@ -49,27 +43,16 @@ namespace Keyboard
         [SerializeField] private Button enterButton;
         [SerializeField] private int maxCharacters = 15;
 
-        private ColorBlock shiftButtonColors;
         private bool isFirstKeyPress = true;
-        private bool keyHasBeenPressed;
-        private bool shiftActive;
-        private bool capsLockActive;
-        private bool specialCharactersActive;
-        private float lastShiftClickTime;
-        private float shiftDoubleClickDelay = 0.5f;
 
         public UnityEvent onKeyboardModeChanged;
 
         private void Awake()
         {
-            
             CheckTextLength();
-            numbersKeyboard.SetActive(true);
             keyChannel.RaiseKeyColorsChangedEvent(normalColor, highlightedColor, pressedColor, selectedColor);
-            numbersKeyboard.SetActive(true);
 
             if (!autoCapsAtStart) return;
-            ActivateShift();
         }
 
 
@@ -79,7 +62,6 @@ namespace Keyboard
 
         private void KeyPress(string key)
         {
-            keyHasBeenPressed = true;
 
             if (outputField.text.Length < 3)
             {
@@ -111,32 +93,6 @@ namespace Keyboard
             
             // Disable shift/caps lock if maximum text length is reached
             if (currentLength != maxCharacters) return;
-            DeactivateShift();
-            capsLockActive = false;
         }
-
-
-
-        private void ActivateShift()
-        {
-            if (!capsLockActive) shiftActive = true;
-
-            onKeyboardModeChanged?.Invoke();
-        }
-
-        public void DeactivateShift()
-        {
-            if (shiftActive && !capsLockActive && keyHasBeenPressed)
-            {
-                shiftActive = false;
-                onKeyboardModeChanged?.Invoke();
-            }
-
-            keyHasBeenPressed = false;
-        }
-
-        public bool IsShiftActive() => shiftActive;
-
-        public bool IsCapsLockActive() => capsLockActive;
     }
 }

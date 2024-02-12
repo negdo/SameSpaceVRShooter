@@ -11,19 +11,20 @@ public class HandGun : PhysicsGrabable
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private float bulletSpeed;
 
-    public void Awake()
-    {
+    public void Awake() {
         // check if bulletPrefab has a NetworkObject component
         Assert.IsNotNull(bulletPrefab.GetComponent<NetworkObject>(), $"{nameof(HandGun)}: bulletPrefab has no {nameof(NetworkObject)} component.");
     }
 
-    public override void OnPrimaryAction()
-    {
-        // check if isEnabled in parent class
-        if (!grabEnabled.Value || !isGrabbed.Value || !isGrabbedLocal || ownerClientId.Value != NetworkManager.Singleton.LocalClientId)
-        {
-            return;
+    public override void OnPrimaryAction() {
+        if (!grabEnabled.Value || !isGrabbed.Value || !isGrabbedLocal || ownerClientId.Value != NetworkManager.Singleton.LocalClientId) {
+            return; // check if isEnabled in parent class
         }
+
+        if (PlayerLocalState.Singleton.GetPlayerState() != PlayerState.Alive) {
+            return; // shooting only allowed when player is alive
+        }
+
         // Get delay of the server
         ulong clientId = NetworkManager.Singleton.LocalClientId;
         float serverDelay = NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(clientId) / 1000.0f;
@@ -36,12 +37,7 @@ public class HandGun : PhysicsGrabable
 
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBulletServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation, float bulletSpeed)
-    {
-        // GameObject spawnedObject = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        // spawnedObject.GetComponent<NetworkObject>().Spawn();
-        // spawnedObject.GetComponent<Bullet>().speed.Value = bulletSpeed;
-
+    private void SpawnBulletServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation, float bulletSpeed) {
         GameObject spawnedObject = NetworkObjectPool.Singleton.GetNetworkObject(bulletPrefab, bulletSpawnPosition, bulletSpawnRotation).gameObject;
     }
 }

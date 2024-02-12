@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhysicsGrabable : Grabable
@@ -11,7 +12,7 @@ public class PhysicsGrabable : Grabable
 
     [Header("Throw settings")]
     [SerializeField] private float throwSpeedMultiplier = 1.0f;
-    [SerializeField] private float frameAverageDivider = 0.1f;
+    [SerializeField] private float frameAverageDivider = 0.2f;
 
 
 
@@ -125,7 +126,10 @@ public class PhysicsGrabable : Grabable
             Vector3 velocity = (transform.position - lastPosition) / Time.deltaTime;
             //Vector3 angularVelocity = (transform.rotation.eulerAngles - lastRotation) / Time.deltaTime;
             Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(lastRotation);
-            Vector3 angularVelocity = deltaRotation.eulerAngles / Time.deltaTime;
+            deltaRotation.ToAngleAxis(out float angleInDegree, out Vector3 rotationAxis);
+            Vector3 rotationDifferenceInDegree = angleInDegree * rotationAxis;
+
+            Vector3 angularVelocity = (rotationDifferenceInDegree * Mathf.Deg2Rad / Time.deltaTime);
 
             GrabbedVelocity = frameAverageDivider * velocity + (1 - frameAverageDivider) * GrabbedVelocity;
             GrabbedAngularVelocity = frameAverageDivider * angularVelocity + (1 - frameAverageDivider) * GrabbedAngularVelocity;

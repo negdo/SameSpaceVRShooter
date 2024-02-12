@@ -5,15 +5,10 @@ using UnityEngine;
 
 public abstract class ButtonArea : MonoBehaviour
 {
-    [SerializeField] private GameObject leftController;
-    [SerializeField] private GameObject rightController;
-
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Button Pressed" + other.gameObject);
-        if (other.gameObject == leftController || other.gameObject == rightController)
-        {
-            
+        if (other.gameObject.tag == "Interactor") {
             OnButtonAction();
         }
     }

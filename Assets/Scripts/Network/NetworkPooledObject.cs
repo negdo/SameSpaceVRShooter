@@ -13,7 +13,6 @@ public abstract class NetworkPooledObject : NetworkBehaviour
         if (!IsServer) {
             // hide all pooled objects on clients when client connects
             gameObject.SetActive(false);
-            Debug.Log("NetworkPooledObject Start IsClient");
         }
     }
 
@@ -32,7 +31,6 @@ public abstract class NetworkPooledObject : NetworkBehaviour
     }
 
     protected void ReturnToPool() {
-        Debug.Log("NetworkPooledObject ReturnToPool");
         if (IsServer) {
             NetworkObjectPool.Singleton.ReturnNetworkObject(gameObject.GetComponent<NetworkObject>(), selfPrefabPoolNumber);
         }

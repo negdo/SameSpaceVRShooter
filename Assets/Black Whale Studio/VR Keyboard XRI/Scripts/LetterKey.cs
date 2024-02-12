@@ -40,14 +40,7 @@ namespace Keyboard
 
         protected override void UpdateKey()
         {
-            if(keyboard.IsShiftActive() || keyboard.IsCapsLockActive())
-            {
-                buttonText.text = character.ToUpper();
-            }
-            else
-            {
-                buttonText.text = character.ToLower();
-            }
+            buttonText.text = character.ToLower();
         }
     }
 }

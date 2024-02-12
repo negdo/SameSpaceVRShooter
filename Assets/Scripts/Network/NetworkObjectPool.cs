@@ -141,9 +141,6 @@ public class NetworkObjectPool : NetworkBehaviour
 
 
         pooledObjects[prefab].Enqueue(networkObject);
-
-        // length of the queue
-        Debug.Log("Return to queue queue length: " + pooledObjects[prefab].Count);
     }
 
     /// <summary>

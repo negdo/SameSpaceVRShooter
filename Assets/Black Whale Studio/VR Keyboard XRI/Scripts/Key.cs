@@ -45,7 +45,7 @@ namespace Keyboard
 
         protected virtual void OnPress()
         {
-            keyboard.DeactivateShift();
+
         }
 
         protected virtual void UpdateKey()

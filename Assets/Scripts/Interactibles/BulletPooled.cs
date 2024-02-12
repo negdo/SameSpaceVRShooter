@@ -11,7 +11,7 @@ public class BulletPooled : NetworkPooledObject, IMovement {
     private float maxLifeTime = 2f;
     private float lifeTime = 2f;
     private float damage = 10f;
-    private float explosionRadius = 1f;
+    private float explosionRadius = 0.1f;
 
 
 

@@ -8,7 +8,7 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader instance;
 
     public static string host_ip = "";
-    public static bool isHost = false;
+    public static bool isHost = true;
     public static bool isServer = false;
 
     private Vector3 playerPositionCalibration = new Vector3(0, 0, 0);

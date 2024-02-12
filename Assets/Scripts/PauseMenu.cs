@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +23,11 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         SettingsButtonAction.action.performed += _ => OnSettingsButton();
+    }
+
+    private void OnDestroy()
+    {
+        SettingsButtonAction.action.performed -= _ => OnSettingsButton();
     }
 
     public void OnSettingsButton()
