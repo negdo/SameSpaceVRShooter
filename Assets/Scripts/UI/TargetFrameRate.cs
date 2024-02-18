@@ -6,20 +6,25 @@ using UnityEngine.XR.ARFoundation;
 public class TargetFrameRate : MonoBehaviour
 {
 
-    public int target = 90;
     // Start is called before the first frame update
     void Start()
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 90;
+        float[] rates;
+        Unity.XR.Oculus.Performance.TryGetAvailableDisplayRefreshRates(out rates);
+        // log the available refresh rates
+        foreach (var r in rates)
+        {
+            Debug.Log("Available refresh rate: " + r);
+        }
+        
+        Unity.XR.Oculus.Performance.TrySetDisplayRefreshRate(90);
+        
+        float rate;
+        Unity.XR.Oculus.Performance.TryGetDisplayRefreshRate(out rate);
+
+        Debug.Log("Current refresh rate: " + rate);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Application.targetFrameRate != target)
-        {
-            Application.targetFrameRate = target;
-        }
-    }
+
 }

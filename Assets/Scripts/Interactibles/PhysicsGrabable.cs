@@ -14,6 +14,8 @@ public class PhysicsGrabable : Grabable
     [SerializeField] private float throwSpeedMultiplier = 1.0f;
     [SerializeField] private float frameAverageDivider = 0.2f;
 
+    [SerializeField] private float throwAngularVelocityMultiplier = 2;
+
 
 
     public NetworkVariable<bool> grabEnabled = new NetworkVariable<bool>(true);
