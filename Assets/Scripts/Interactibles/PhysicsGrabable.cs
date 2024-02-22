@@ -62,7 +62,7 @@ public class PhysicsGrabable : Grabable
 
         rigidbodyComponent.isKinematic = false;
         rigidbodyComponent.velocity = GrabbedVelocity * throwSpeedMultiplier;
-        rigidbodyComponent.angularVelocity = GrabbedAngularVelocity;
+        rigidbodyComponent.angularVelocity = GrabbedAngularVelocity * throwAngularVelocityMultiplier;
 
         isGrabbedLocal = false;
         thrownGiveBackToServerLocal = true;

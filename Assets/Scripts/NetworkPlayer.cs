@@ -6,18 +6,6 @@ using UnityEngine;
 
 public class NetworkPlayer : NetworkBehaviour
 {
-    [SerializeField] Transform root;
-    [SerializeField] Transform head;
-    [SerializeField] Transform leftHand;
-    [SerializeField] Transform rightHand;
-    [SerializeField] Transform body;
-    [SerializeField] GameObject readyButton;
-    [SerializeField] PlayerTextOverlay OverlayText;
-
-    // queue of last 10 head positions
-    private Queue<Vector3> recentHeadPositions = new Queue<Vector3>();
-
-
     public NetworkVariable<int> team = new NetworkVariable<int>(0);
     public NetworkVariable<int> state = new NetworkVariable<int>(PlayerState.NotReady);
     private float maxHealth = 100;
@@ -25,92 +13,90 @@ public class NetworkPlayer : NetworkBehaviour
     public NetworkVariable<int> kills = new NetworkVariable<int>();
     public NetworkVariable<int> deaths = new NetworkVariable<int>();
 
-
-
+    public float GetHealth() { return health.Value; }
 
     private void Start() {
+        // new player joins the game
+        // set max health and state not-ready
         if (IsServer) {
             health.Value = maxHealth;
-            SetPlayerState(PlayerState.NotReady);
-        }
 
-        if (IsOwner) {
-            OverlayText.GetToStartingZone();
-        }
-    }
-
-    void Update() {
-        if (IsOwner) {
-            root.position = VRRigReferences.Singelton.root.position;
-            root.rotation = VRRigReferences.Singelton.root.rotation;
-
-            head.position = VRRigReferences.Singelton.head.position;
-            head.rotation = VRRigReferences.Singelton.head.rotation;
-
-            leftHand.position = VRRigReferences.Singelton.leftHand.position;
-            leftHand.rotation = VRRigReferences.Singelton.leftHand.rotation * Quaternion.Euler(45, 0, 0);
-
-            rightHand.position = VRRigReferences.Singelton.rightHand.position;
-            rightHand.rotation = VRRigReferences.Singelton.rightHand.rotation * Quaternion.Euler(45, 0, 0);
-
-            recentHeadPositions.Enqueue(VRRigReferences.Singelton.head.position);
-            if (recentHeadPositions.Count > 20) {
-                recentHeadPositions.Dequeue();
-            }
-
-            
-            // average head position
-            Vector3 averageHeadPosition = Vector3.zero;
-            foreach (Vector3 position in recentHeadPositions) {
-                averageHeadPosition += position;
-            }
-            averageHeadPosition /= recentHeadPositions.Count;
-
-
-            body.position = averageHeadPosition - new Vector3(0, 0.2f, 0);
-            body.rotation = Quaternion.Euler(0, VRRigReferences.Singelton.head.rotation.eulerAngles.y, 0);
-
-            if (state.Value == PlayerState.Alive) {
-                CheckDead();
+            if (GameOperator.Singleton.gameState.Value == State.Lobby) {
+                SetPlayerState(PlayerState.NotReady);
+            } else {
+                SetPlayerState(PlayerState.Alive);
+                AssignTeam(0);
             }
         }
     }
+
+
 
     private void CheckDead() {
-        if (health.Value <= 0) {
-            DieServerRpc();
-
-            // hide all walls on the owner client
-            Wall[] walls = FindObjectsOfType<Wall>();
-            foreach (Wall wall in walls) {
-                wall.hideWall();
+        // called on server to check if player is dead
+        if (IsServer) {
+            if (health.Value <= 0) {
+                Die();
             }
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    protected void DieServerRpc() {
+    protected void Die() {
+        // called on server when player dies
         SetPlayerState(PlayerState.Dead);
         deaths.Value++;
+
+        // TODO: check if inside starting point for self team
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    protected void RespawnServerRpc() {
-        SetPlayerState(PlayerState.Respawning);
+
+    public void StartingPointColided(int StartPointTeam) {
+        if (IsServer) {
+            // game is running and player is dead -> respawn
+            if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Dead) {
+                // check if point is for the same team
+                if (team.Value == StartPointTeam) {
+                    Respawn();
+                }
+            }
+        }
+    }
+
+    private void Respawn() {
+        // called on server
         health.Value = maxHealth;
+        SetPlayerState(PlayerState.Respawning);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    protected void AliveServerRpc() {
+    public void StartingPointLeft(int StartPointTeam) {
+        // called on server only
+        // TODO call on server only
+        if (IsServer) {
+            // make player alive when game is running and player is respawning state inside starting point
+            if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Respawning) {
+                // check if point is for the same team
+                if (team.Value == StartPointTeam) {
+                    Alive();
+                }
+            } else if (GameOperator.Singleton.gameState.Value == State.Lobby && state.Value == PlayerState.Ready) {
+                // make player not ready when leaving starting point
+                SetNotReadyServerRpc();
+            }
+        }
+    }
+
+    private void Alive() {
+        // called on server
         SetPlayerState(PlayerState.Alive);
     }
 
     public void BulletHit(Transform transform, float damage) {
-        if (GameOperator.instance.gameState.Value != State.Game || state.Value != PlayerState.Alive) {
-            return; // do nothing if not in game or not alive
+        // called on server
+        if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Alive) {
+            health.Value -= damage;
+            DamageClientRpc();
+            CheckDead();
         }
-        SubtractHealthServerRpc(damage);
-        DamageClientRpc();
     }
 
     [ClientRpc]
@@ -118,78 +104,27 @@ public class NetworkPlayer : NetworkBehaviour
         if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerDamage(); 
     }
 
-    [ServerRpc (RequireOwnership = false)]
-    public void SubtractHealthServerRpc(float damage) {
-        if (IsOwner) {
-            PlayerStateSphereOverlay.Singleton.PlayerDamage();
-        }
-        health.Value -= damage;
-    }
 
-    public float GetHealth() { return health.Value; }
-
-    public void StartingPointColided(int StartPointTeam) {
-        if (IsOwner) {
-            // show ready button when in lobby
-            if (GameOperator.instance.gameState.Value == State.Lobby) {
-                    readyButton.gameObject.SetActive(true);
-                    OverlayText.ClickReadyText();
-                
-            // respawn when game is running and player is dead
-            } else if (GameOperator.instance.gameState.Value == State.Game && state.Value == PlayerState.Dead) {
-                if (team.Value == StartPointTeam) {
-                    RespawnServerRpc();
-
-                    // show all walls on the owner client
-                    Wall[] walls = FindObjectsOfType<Wall>();
-                    foreach (Wall wall in walls) {
-                        wall.showWall();
-                    }
-                }
-            } else if (PlayerLocalState.Singleton.GetPlayerState() == PlayerState.Dead) {
-                Debug.Log("Player is dead, but not weirdly dead " + GameOperator.instance.gameState.Value + state.Value + PlayerLocalState.Singleton.GetPlayerState());
-            
-            }
-        }
-    }
-
-    public void StartingPointLeft(int StartPointTeam) {
-        if (IsOwner) {
-            if (GameOperator.instance.gameState.Value == State.Lobby) {
-                readyButton.gameObject.SetActive(false);
-                SetNotReady();
-
-            // make player alive when game is running and player is respawning state inside starting point
-            } else if (GameOperator.instance.gameState.Value == State.Game && state.Value == PlayerState.Respawning) {
-                if (team.Value == StartPointTeam)
-                    AliveServerRpc();
-            }
-        }
-    }
-
-    public void AssignTeam(int team)
-    {
+    public void AssignTeam(int team) {
         // find children components with TeamColorSetter script
         this.team.Value = team;
         TeamColorSetter[] teamColorSetters = GetComponentsInChildren<TeamColorSetter>();
-        foreach (TeamColorSetter teamColorSetter in teamColorSetters)
-        {
+        foreach (TeamColorSetter teamColorSetter in teamColorSetters) {
             teamColorSetter.AssignTeam(team);
         }
     }
 
+
     public void StartGame() {
         // called on server
-        readyButton.gameObject.SetActive(false);
-        if (IsOwner) {
-            OverlayText.Countdown();
-        }
+        StartGameClientRpc();
+
         // delay start game for 5 seconds
         StartCoroutine(StartGameDelayedCoroutine());
     }
 
     private IEnumerator StartGameDelayedCoroutine() {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1);
         StartGameDelayed();
     }
 
@@ -197,44 +132,44 @@ public class NetworkPlayer : NetworkBehaviour
         // called on server
         SetPlayerState(PlayerState.Alive);
         health.Value = maxHealth;
-        StartGameClientRpc();
     }
 
     [ClientRpc]
     public void StartGameClientRpc() { 
-        readyButton.gameObject.SetActive(false);
+        // TODO trigger countdown text on client
+    }
+
+    public void SetReady() {
+        // called on owner when clicking ready button
         if (IsOwner) {
-            OverlayText.Countdown();
+            SetReadyServerRpc();
         }
     }
 
-    public void SetReady() { SetReadyServerRpc(); }
-    public void SetNotReady() { SetNotReadyServerRpc(); }
+    public void SetNotReady() { 
+        // called on owner when clicking on ready button again
+        if (IsOwner) {
+            SetNotReadyServerRpc();
+        }
+    }
 
     [ServerRpc (RequireOwnership = false)]
     public void SetReadyServerRpc() {
         SetPlayerState(PlayerState.Ready);
-        GameOperator.instance.CheckStartGame();
+        GameOperator.Singleton.CheckStartGame();
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void SetNotReadyServerRpc() { SetPlayerState(PlayerState.NotReady); }
-
-    public int GetLocalPlayerState() {
-        if (IsOwner) {
-            return state.Value;
-        }
-        return -1;
+    public void SetNotReadyServerRpc() {
+        SetPlayerState(PlayerState.NotReady);
     }
 
     private void SetPlayerState(int state) {
         // called on server
-        this.state.Value = state;
-        if (IsOwner) {
-            PlayerLocalState.Singleton.SetPlayerState(state);
-        } else {
+        if (IsServer) {
+            this.state.Value = state;
             SetPlayerStateClientRpc(state);
-        }
+        } 
     }
 
     [ClientRpc]

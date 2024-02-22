@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class GameOperator : NetworkBehaviour
 {
-    public static GameOperator instance;
+    public static GameOperator Singleton { get; private set; }
 
 
     public NetworkVariable<int> gameState = new NetworkVariable<int>(State.Lobby);
@@ -16,12 +16,12 @@ public class GameOperator : NetworkBehaviour
     
 
 
-    private void Awake() {
-        instance = this;
+    void Start() {
+        Singleton = this;
     }
 
     public void CheckStartGame() {
-        Debug.Log("Checking if game can start");
+        // called on server
         if (IsServer) {
             
             // get all players in the scene
@@ -50,8 +50,8 @@ public class GameOperator : NetworkBehaviour
         }
     }
 
-    private void StartGame()
-    {
+    private void StartGame() {
+        // called on server
         Debug.Log("Starting game");
 
         // get all LevelComponentGrabable objects in the scene
@@ -92,8 +92,30 @@ public class GameOperator : NetworkBehaviour
             players[i].StartGame();
         }
 
+        StartGameClientRpc();
+
 
     }
+
+    [ClientRpc]
+    private void StartGameClientRpc() {
+        Debug.Log("Starting game client rpc");
+
+        // raise all walls
+        Wall[] walls = FindObjectsOfType<Wall>();
+        foreach (Wall wall in walls) {
+            wall.hideWall();
+        }
+
+        // drop all starting point ready buttons
+        StartingPoint[] startingPoints = FindObjectsOfType<StartingPoint>();
+        foreach (StartingPoint startingPoint in startingPoints) {
+            startingPoint.SetStateGame();
+        }
+    }
+        
+
+
 
 }
 
