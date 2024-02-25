@@ -9570,9 +9570,10 @@ GameObject:
   - component: {fileID: 4021103657954561960}
   - component: {fileID: 5174952337391946674}
   - component: {fileID: -1996401838942297018}
+  - component: {fileID: 7793418676271961579}
   - component: {fileID: -8871098808663852300}
   m_Layer: 0
-  m_Name: BulletHitExplosion
+  m_Name: Explosion Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14343,6 +14344,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aede4bd008e67444e832aa869c14f5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7793418676271961579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021103657954561961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57d4161dce11b945bd82dad9a8720b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   selfPrefabPoolNumber: 1

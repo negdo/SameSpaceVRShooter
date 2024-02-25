@@ -1,32 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 interface IMovement {
     Vector3 GetMovement(float deltaTime);
 }
 
-public class BulletPooled : NetworkPooledObject, IMovement {
-    private float speed = 5f;
+public class BulletPooled : NetworkBehaviour, IPooledObject, IMovement {
+    [SerializeField] float speed = 10f;
     private float maxLifeTime = 2f;
     private float lifeTime = 2f;
     private float damage = 10f;
     private float explosionRadius = 0.1f;
 
-
-
     [SerializeField] private GameObject explosionHitPrefab;
 
-    protected override void ResetState() {
-        lifeTime = maxLifeTime;
+    private NetworkPooledObject networkPooledObject;
 
-        // get component NetworkTransform
-        NetworkTransformLinear networkTransform = GetComponent<NetworkTransformLinear>();
+    private void Start() {
+        networkPooledObject = gameObject.GetComponent<NetworkPooledObject>();
     }
 
-    protected override void UpdateState() {
+    public void ResetState() {
+        lifeTime = maxLifeTime;
+    }
+
+    public void UpdateState() {
         if (lifeTime <= 0) {
-            ReturnToPool();
+            networkPooledObject.ReturnToPool();
         }
         lifeTime -= Time.deltaTime;
 
@@ -52,9 +54,9 @@ public class BulletPooled : NetworkPooledObject, IMovement {
             foreach (NetworkPlayer player in hitPlayers) {
                 player.BulletHit(gameObject.transform, damage);
             }
-        }
 
-        ReturnToPool();
+            networkPooledObject.ReturnToPool();
+        }
     }
 
     public Vector3 GetMovement(float deltaTime) {

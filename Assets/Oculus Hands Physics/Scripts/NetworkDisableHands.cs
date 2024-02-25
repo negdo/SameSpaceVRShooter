@@ -10,7 +10,8 @@ public class NetworkDisableHands : NetworkBehaviour
 
     void Start() {
         if (IsOwner) {
-            Debug.Log("Is owner of hand");
+            // disable game object
+            gameObject.SetActive(false);
         } else {
             // disable animator
             animator.enabled = false;

@@ -106,6 +106,10 @@ public class PlayerLocalState : MonoBehaviour
 
     private void CallOtherUpdates(int state) {
         if (state == PlayerState.Alive) {
+            Wall[] walls = FindObjectsOfType<Wall>();
+            foreach (Wall wall in walls) {
+                wall.showWall();
+            }
 
 
         } else if (state == PlayerState.Dead) {

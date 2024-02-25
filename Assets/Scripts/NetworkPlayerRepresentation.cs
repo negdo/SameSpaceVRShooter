@@ -19,10 +19,10 @@ public class NetworkPlayerRepresentation : NetworkBehaviour {
             head.position = VRRigReferences.Singelton.head.position;
             head.rotation = VRRigReferences.Singelton.head.rotation;
 
-            leftHand.position = VRRigReferences.Singelton.leftHand.position;
+            leftHand.position = VRRigReferences.Singelton.leftHandPhysics.position;
             leftHand.rotation = VRRigReferences.Singelton.leftHand.rotation * Quaternion.Euler(45, 0, 0);
 
-            rightHand.position = VRRigReferences.Singelton.rightHand.position;
+            rightHand.position = VRRigReferences.Singelton.rightHandPhysics.position;
             rightHand.rotation = VRRigReferences.Singelton.rightHand.rotation * Quaternion.Euler(45, 0, 0);
 
             recentHeadPositions.Enqueue(VRRigReferences.Singelton.head.position);

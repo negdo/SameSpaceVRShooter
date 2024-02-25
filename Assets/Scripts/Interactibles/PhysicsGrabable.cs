@@ -32,10 +32,17 @@ public class PhysicsGrabable : Grabable
     private Quaternion lastRotation;
 
 
-    public override bool OnGrab(GameObject Hand)
-    {
-        if (isGrabbed.Value || !grabEnabled.Value)
-        {
+    public override void OnNetworkSpawn() {
+        if (IsOwner) {
+            rigidbodyComponent.isKinematic = false;
+        } else {
+            rigidbodyComponent.isKinematic = true;
+        }
+    }
+
+
+    public override bool OnGrab(GameObject Hand) {
+        if (isGrabbed.Value || !grabEnabled.Value) {
             return false;
         }
 
@@ -53,10 +60,8 @@ public class PhysicsGrabable : Grabable
     }
 
 
-    public override void OnRelease()
-    {
-        if (!isGrabbed.Value && !isGrabbedLocal)
-        {
+    public override void OnRelease() {
+        if (!isGrabbed.Value && !isGrabbedLocal) {
             return;
         }
 
@@ -71,8 +76,7 @@ public class PhysicsGrabable : Grabable
 
 
     [ServerRpc(RequireOwnership = false)]
-    private void GrabGetOwnershipServerRpc(ServerRpcParams rpcParams = default)
-    {
+    private void GrabGetOwnershipServerRpc(ServerRpcParams rpcParams = default) {
         thrownGiveBackToServer.Value = false;
         thrownGiveBackToServerLocal = false;
         // Set ownership to this client
@@ -82,43 +86,50 @@ public class PhysicsGrabable : Grabable
         isGrabbedLocal = true;
     }
 
+
     [ServerRpc]
-    private void ReleaseServerRpc(ServerRpcParams rpcParams = default)
-    {
+    private void ReleaseServerRpc() {
         isGrabbed.Value = false;
         isGrabbedLocal = false;
         thrownGiveBackToServer.Value = true;
         thrownGiveBackToServerLocal = true;
     }
 
+
     [ServerRpc]
-    private void ReturnOwnershipServerRpc(ServerRpcParams rpcParams = default)
-    {
+    private void ReturnOwnershipServerRpc() {
         // Set ownership to server
         networkObject.ChangeOwnership(0);
         ownerClientId.Value = 0;
         thrownGiveBackToServer.Value = false;
         thrownGiveBackToServerLocal = false;
-
+        isGrabbed.Value = false;
+        isGrabbedLocal = false;
         rigidbodyComponent.isKinematic = false;
     }
 
+    public void ReturnOwnershipServerRpcCopy() {
+        // called from NetworkObjectPool not over network
+        networkObject.ChangeOwnership(0);
+        ownerClientId.Value = 0;
+        thrownGiveBackToServer.Value = false;
+        thrownGiveBackToServerLocal = false;
+        rigidbodyComponent.isKinematic = true;
+        isGrabbed.Value = false;
+        grabEnabled.Value = true;
+    }
 
-    void Update()
-    {
+
+    void Update() {
         UpdateGrabbableTransform();
     }
 
-    private void UpdateGrabbableTransform()
-    {
+    private void UpdateGrabbableTransform() {
 
-        if (isGrabbedLocal != isGrabbed.Value)
-        {
-            // don't doo anything
-            print("Grabbed local not the same");
-        }
-        else if (isGrabbed.Value && isGrabbedLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
-        {
+        if (isGrabbedLocal != isGrabbed.Value) {
+            return;
+
+        } else if (isGrabbed.Value && isGrabbedLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId) {
             // update position and rotation
             transform.position = lastHand.transform.position;
             transform.rotation = lastHand.transform.rotation;
@@ -141,8 +152,7 @@ public class PhysicsGrabable : Grabable
 
 
         }
-        else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId)
-        {
+        else if (!isGrabbed.Value && !isGrabbedLocal && thrownGiveBackToServer.Value && thrownGiveBackToServerLocal && ownerClientId.Value == NetworkManager.Singleton.LocalClientId) {
             // if object is thrown, should be given back to server when it stops moving
             if (rigidbodyComponent.velocity.magnitude < 0.0001f && rigidbodyComponent.angularVelocity.magnitude < 0.0001f) {
                 thrownGiveBackToServerLocal = false;
@@ -152,21 +162,31 @@ public class PhysicsGrabable : Grabable
     }
 
 
-    public override void OnLostOwnership()
-    {
+    public override void OnLostOwnership() {
         updateOtherClientsKinematic();
     }
 
-    public override void OnGainedOwnership()
-    {
+
+    public override void OnGainedOwnership() {
         updateOtherClientsKinematic();
     }
 
-    private void updateOtherClientsKinematic()
-    {
-        if (!IsOwner)
-        {
+
+    private void updateOtherClientsKinematic() {
+        if (!IsOwner) {
             rigidbodyComponent.isKinematic = true;
         }
+    }
+
+    public void NetworkPoolDisable() {
+        // called from NetworkPooledObject on server
+        rigidbodyComponent.isKinematic = true;
+        thrownGiveBackToServerLocal = false;
+        isGrabbedLocal = false;
+    }
+
+    public void NetworkPoolEnable() {
+        // called from NetworkPooledObject on server
+        rigidbodyComponent.isKinematic = false;
     }
 }

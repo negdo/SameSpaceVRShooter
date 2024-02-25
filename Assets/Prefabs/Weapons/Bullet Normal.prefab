@@ -94,11 +94,12 @@ GameObject:
   - component: {fileID: 296915422604525708}
   - component: {fileID: 6754200746375010469}
   - component: {fileID: 8685163490817396490}
+  - component: {fileID: 544078268044248004}
   - component: {fileID: 4606000928512158397}
   - component: {fileID: 4825548322671143306}
   - component: {fileID: -6406003888969211059}
   m_Layer: 3
-  m_Name: Bullet
+  m_Name: Bullet Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3876898663
+  GlobalObjectIdHash: 3446039658
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -170,6 +171,19 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 0
   SlerpPosition: 0
+--- !u!114 &544078268044248004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2862668420837030742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57d4161dce11b945bd82dad9a8720b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfPrefabPoolNumber: 0
 --- !u!114 &4606000928512158397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0d1e8d8ef5be2498bebc80c1d3837b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfPrefabPoolNumber: 0
   explosionHitPrefab: {fileID: 4021103657954561961, guid: 0208b0243d40e5c4d8188e7584b1b943, type: 3}
 --- !u!135 &4825548322671143306
 SphereCollider:
