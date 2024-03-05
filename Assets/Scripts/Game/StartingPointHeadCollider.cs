@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartingPointHeadCollider : MonoBehaviour
-{
-    // collision trigger only on Water layer to collide with starting point
+public class StartingPointHeadCollider : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("StartingPoint")) {
             NetworkPlayer player = gameObject.transform.parent.GetComponent<NetworkPlayer>();

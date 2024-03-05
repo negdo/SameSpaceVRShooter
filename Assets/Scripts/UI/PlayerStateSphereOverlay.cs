@@ -12,10 +12,16 @@ public class PlayerStateSphereOverlay : MonoBehaviour
     private Boolean isFadeOut = false;
     private Boolean isOverlayActive = false;
     private Boolean isOverlayStatic = false;
+    private Boolean isPaintOverlayFadeOut = false;
+    private Boolean isPaintCountdown = false;
+    private float paintCountdown = 0;
     [SerializeField] Material SphereOverlayMaterial;
 
     [SerializeField] private Color redColor = new Color(113f/255f, 9f/255f, 9f/255f, 1);
     [SerializeField] private Color blueColor = new Color(0f/255f, 255f/255f, 255f/255f, 1);
+
+    [Header("Paint")]
+    [SerializeField] private Material paintMaterial;
 
     private Color currentColor;
 
@@ -62,6 +68,13 @@ public class PlayerStateSphereOverlay : MonoBehaviour
         }
     }
 
+    public void PlayerPaint(float time) {
+        // set _alphamul material property to 1
+        paintMaterial.SetFloat("_alphaMult", 1);
+        isPaintCountdown = true;
+        paintCountdown = time;
+    }
+
     
 
 
@@ -87,6 +100,22 @@ public class PlayerStateSphereOverlay : MonoBehaviour
                     isOverlayStatic = false;
                 }
                 SetOverlay(currentAlpha);
+            }
+        }
+
+        if (isPaintCountdown) {
+            paintCountdown -= Time.deltaTime;
+            if (paintCountdown <= 0) {
+                isPaintCountdown = false;
+                isPaintOverlayFadeOut = true;
+            }
+        }
+
+
+        if (isPaintOverlayFadeOut) {
+            paintMaterial.SetFloat("_alphaMult", Mathf.Max(0, paintMaterial.GetFloat("_alphaMult") - Time.deltaTime * 0.5f));
+            if (paintMaterial.GetFloat("_alphaMult") <= 0) {
+                isPaintOverlayFadeOut = false;
             }
         }
     }

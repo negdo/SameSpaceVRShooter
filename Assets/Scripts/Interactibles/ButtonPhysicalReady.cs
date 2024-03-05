@@ -12,6 +12,7 @@ public class ButtonPhysicalReady : MonoBehaviour {
     [SerializeField] private Animator buttonAnimator;
 
     private void OnTriggerEnter(Collider other) {
+        Debug.Log("ButtonPhysicalReady: OnTriggerEnter " + other.gameObject.tag);
         if (other.gameObject.tag == "Interactor") {
             if (!isPressed) {
                 isPressed = true;

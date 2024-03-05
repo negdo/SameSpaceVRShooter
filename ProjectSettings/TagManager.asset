@@ -14,11 +14,11 @@ TagManager:
   - Bullet
   - Water
   - UI
-  - Wall Post Process
+  - Post Process
   - Starting Point
   - Left Hand Physics
   - Right Hand Physics
-  - 
+  - Hand Collider Physics
   - 
   - 
   - 

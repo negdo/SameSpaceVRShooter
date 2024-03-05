@@ -93,17 +93,30 @@ public class NetworkPlayer : NetworkBehaviour
     public void BulletHit(Transform transform, float damage) {
         // called on server
         if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Alive) {
-            health.Value -= damage;
+            health.Value = Mathf.Max(0, health.Value - damage);
             DamageClientRpc();
             CheckDead();
         }
     }
+
+
+    public void PaintHit(Transform transform, float damage) {
+        // called on server
+        if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Alive) {
+            PaintOverlayClientRpc(damage);
+        }
+    }
+
 
     [ClientRpc]
     public void DamageClientRpc() { 
         if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerDamage(); 
     }
 
+    [ClientRpc]
+    public void PaintOverlayClientRpc(float time) { 
+        if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerPaint(time);
+    }
 
     public void AssignTeam(int team) {
         // find children components with TeamColorSetter script

@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GranadeDamage : Granade {
-
+public class GranadePaint : Granade {
     [SerializeField] private float explosionRadius = 3f;
-    [SerializeField] private float damage = 120f;
+    [SerializeField] private float damage = 20f;
     [SerializeField] private GameObject explosionHitPrefab;
 
     protected override void Explode() {
@@ -13,7 +12,7 @@ public class GranadeDamage : Granade {
             // Explosion visual effect
             GameObject explosion = NetworkObjectPool.Singleton.GetNetworkObject(explosionHitPrefab, transform.position, Quaternion.identity).gameObject;
 
-            // Explosion damage to players
+            // Paint on players
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
             HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
 
@@ -49,7 +48,7 @@ public class GranadeDamage : Granade {
                 
                 if (distance < explosionRadius) {
                     float calculated_damage = (1 - distance / explosionRadius) * damage;
-                    player.BulletHit(gameObject.transform, calculated_damage);
+                    player.PaintHit(gameObject.transform, calculated_damage);
                 }
             }
         }
