@@ -29,6 +29,9 @@ public class LevelComponentGrabable : Grabable
         lastHand = Hand;
         relativeHandPosition = transform.position - lastHand.transform.position;
         relativeHandRotationY = transform.rotation.eulerAngles.y - lastHand.transform.rotation.eulerAngles.y;
+
+        // disable collider
+        GetComponent<Collider>().enabled = false;
         
         return true;
     }
@@ -40,6 +43,9 @@ public class LevelComponentGrabable : Grabable
         }
 
         isGrabbedLocal = false;
+        // enable collider
+        GetComponent<Collider>().enabled = true;
+
         ReturnOwnershipServerRpc();
     }
 

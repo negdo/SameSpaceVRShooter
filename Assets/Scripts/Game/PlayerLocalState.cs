@@ -108,7 +108,7 @@ public class PlayerLocalState : MonoBehaviour
         if (state == PlayerState.Alive) {
             Wall[] walls = FindObjectsOfType<Wall>();
             foreach (Wall wall in walls) {
-                wall.showWall();
+                wall.riseWall();
             }
 
 
@@ -116,7 +116,7 @@ public class PlayerLocalState : MonoBehaviour
             // hide all walls
             Wall[] walls = FindObjectsOfType<Wall>();
             foreach (Wall wall in walls) {
-                wall.hideWall();
+                wall.lowerWall();
             }
 
             // TODO: drop everything from hands
@@ -125,7 +125,7 @@ public class PlayerLocalState : MonoBehaviour
         } else if (state == PlayerState.Respawning) {
             Wall[] walls = FindObjectsOfType<Wall>();
             foreach (Wall wall in walls) {
-                wall.showWall();
+                wall.riseWall();
             }
             
 

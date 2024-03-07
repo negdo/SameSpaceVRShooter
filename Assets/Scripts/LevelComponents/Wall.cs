@@ -2,18 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wall : MonoBehaviour
-{
-    public void hideWall() {
-        // turn off mesh renderer in children
-        foreach (Transform child in transform) {
-            child.gameObject.GetComponent<MeshRenderer>().enabled = false;
-        }
-    }
+public class Wall : MonoBehaviour {
+
+    [SerializeField] Animator WallAnimator;
+    [SerializeField] Collider WallCollider;
+    [SerializeField] GameObject WallMesh;
+
 
     public void showWall() {
-        foreach (Transform child in transform) {
-            child.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        }
+        WallMesh.SetActive(true);
+    }
+
+    public void hideWall() {
+        WallMesh.SetActive(false);
+    }
+
+
+
+    public void riseWall() {
+        WallAnimator.SetBool("IsUp", true);
+        WallCollider.enabled = true;
+    }
+
+    public void lowerWall() {
+        WallAnimator.SetBool("IsUp", false);
+        WallCollider.enabled = false;
     }
 }

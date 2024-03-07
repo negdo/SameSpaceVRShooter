@@ -101,11 +101,12 @@ public class GameOperator : NetworkBehaviour
     private void StartGameClientRpc() {
         Debug.Log("Starting game client rpc");
 
+        /* TODO: remove, ker to delam že v player statu
         // raise all walls
         Wall[] walls = FindObjectsOfType<Wall>();
         foreach (Wall wall in walls) {
-            wall.hideWall();
-        }
+            wall.riseWall();
+        } */
 
         // drop all starting point ready buttons
         StartingPoint[] startingPoints = FindObjectsOfType<StartingPoint>();
