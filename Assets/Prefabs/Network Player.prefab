@@ -206,6 +206,7 @@ MonoBehaviour:
     m_InternalValue: 0
   deaths:
     m_InternalValue: 0
+  startingPointHeadColliders: {fileID: 1241728255467359782}
 --- !u!114 &2287064394516311039
 MonoBehaviour:
   m_ObjectHideFlags: 0

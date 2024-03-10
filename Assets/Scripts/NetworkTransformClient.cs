@@ -4,19 +4,8 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
-public class NetworkTransformClient : NetworkTransform
-{
-    private bool forceUpdate = false;
+public class NetworkTransformClient : NetworkTransform {
     protected override bool OnIsServerAuthoritative() {
         return false;
     }
-
-
-    [ServerRpc(RequireOwnership = false)]
-    public void forceUpdateServerRpc(Vector3 position, Quaternion rotation) {
-        // set dirty bits to force update on clients
-        
-    }
-
-
 }

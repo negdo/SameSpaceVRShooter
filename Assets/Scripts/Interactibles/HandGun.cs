@@ -4,12 +4,13 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Assertions;
 
-public class HandGun : PhysicsGrabable
-{
+public class HandGun : PhysicsGrabable, IPooledObject {
     [Header("Bullet")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
-    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float timeBetweenShots = 0.3f;
+
+    private float lastShotTime = 0f;
 
     public void Awake() {
         // check if bulletPrefab has a NetworkObject component
@@ -25,19 +26,25 @@ public class HandGun : PhysicsGrabable
             return; // shooting only allowed when player is alive
         }
 
-        // Get delay of the server
-        ulong clientId = NetworkManager.Singleton.LocalClientId;
-        float serverDelay = NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(clientId) / 1000.0f;
-
-        Transform compensatedBulletSpawnPoint = bulletSpawnPoint;
-        compensatedBulletSpawnPoint.Translate(Vector3.forward * bulletSpeed * serverDelay);
+        if (Time.time - lastShotTime < timeBetweenShots) {
+            return; // prevent shooting too fast
+        }
         
-        SpawnBulletServerRpc(compensatedBulletSpawnPoint.position, compensatedBulletSpawnPoint.rotation, bulletSpeed);
+        lastShotTime = Time.time;
+        SpawnBulletServerRpc(bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBulletServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation, float bulletSpeed) {
+    private void SpawnBulletServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation) {
         GameObject spawnedObject = NetworkObjectPool.Singleton.GetNetworkObject(bulletPrefab, bulletSpawnPosition, bulletSpawnRotation).gameObject;
+    }
+
+    public void ResetState() {
+        // nothing to reset
+    }
+
+    public void UpdateState() {
+        // nothing to update
     }
 }

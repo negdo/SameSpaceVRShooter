@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3537321833
+  GlobalObjectIdHash: 979557252
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -153,6 +153,8 @@ MonoBehaviour:
   throwSpeedMultiplier: 2
   frameAverageDivider: 0.2
   throwAngularVelocityMultiplier: 2
+  willDespawn: 1
+  despawnTime: 30
   grabEnabled:
     m_InternalValue: 1
   isGrabbed:

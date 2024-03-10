@@ -15,6 +15,9 @@ public class PhysicsGrabable : Grabable
     [SerializeField] private float frameAverageDivider = 0.2f;
 
     [SerializeField] private float throwAngularVelocityMultiplier = 2;
+    [SerializeField] private bool willDespawn = false;
+    [SerializeField] private float despawnTime = 30.0f;
+    private float despawnTimer = 30.0f;
 
 
 
@@ -38,6 +41,8 @@ public class PhysicsGrabable : Grabable
         } else {
             rigidbodyComponent.isKinematic = true;
         }
+
+        despawnTimer = despawnTime;
     }
 
 
@@ -122,6 +127,22 @@ public class PhysicsGrabable : Grabable
 
     void Update() {
         UpdateGrabbableTransform();
+
+        // despawn object after despawnTime
+        if (willDespawn && IsServer) {
+            if (isGrabbed.Value) {
+                despawnTimer = despawnTime;
+            } else {
+                despawnTimer -= Time.deltaTime;
+                if (despawnTimer <= 0) {
+                    despawnTimer = despawnTime;
+                    NetworkPooledObject networkPooledObject = gameObject.GetComponent<NetworkPooledObject>();
+                    if (networkPooledObject != null) {
+                        networkPooledObject.ReturnToPool();
+                    }
+                }
+            }
+        }
     }
 
     private void UpdateGrabbableTransform() {

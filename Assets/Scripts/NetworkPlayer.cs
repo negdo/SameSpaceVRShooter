@@ -13,6 +13,8 @@ public class NetworkPlayer : NetworkBehaviour
     public NetworkVariable<int> kills = new NetworkVariable<int>();
     public NetworkVariable<int> deaths = new NetworkVariable<int>();
 
+    [SerializeField] private StartingPointHeadCollider startingPointHeadColliders;
+
     public float GetHealth() { return health.Value; }
 
     private void Start() {
@@ -41,12 +43,22 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+
     protected void Die() {
         // called on server when player dies
         SetPlayerState(PlayerState.Dead);
         deaths.Value++;
 
         // TODO: check if inside starting point for self team
+        if (startingPointHeadColliders != null) {
+            if (startingPointHeadColliders.CheckIfCollidesTeam(team.Value)) {
+                // inside starting point -> respawn
+                Respawn();
+            }
+        }
+        
+
+
     }
 
 
@@ -94,7 +106,7 @@ public class NetworkPlayer : NetworkBehaviour
         // called on server
         if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Alive) {
             health.Value = Mathf.Max(0, health.Value - damage);
-            DamageClientRpc();
+            DamageClientRpc(health.Value);
             CheckDead();
         }
     }
@@ -109,8 +121,8 @@ public class NetworkPlayer : NetworkBehaviour
 
 
     [ClientRpc]
-    public void DamageClientRpc() { 
-        if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerDamage(); 
+    public void DamageClientRpc(float health) { 
+        if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerDamage(health); 
     }
 
     [ClientRpc]

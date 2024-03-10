@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Shotgun : PhysicsGrabable {
+public class Shotgun : PhysicsGrabable, IPooledObject {
+    [SerializeField] private int numberOfBullets = 5;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
-    [SerializeField] private float coneAngle = 30.0f;
-    [SerializeField] private float coneDistance = 5.0f;
-    [SerializeField] private float damage = 80.0f;
-    [SerializeField] private GameObject explosionShot;
+    [SerializeField] private float coneAngle = 15.0f;
+    [SerializeField] private float timeBetweenShots = 0.7f;
+    private float lastShotTime = 0f;
+
 
     public override void OnPrimaryAction() {
         if (!grabEnabled.Value || !isGrabbed.Value || !isGrabbedLocal || ownerClientId.Value != NetworkManager.Singleton.LocalClientId) {
@@ -19,32 +21,27 @@ public class Shotgun : PhysicsGrabable {
             return; // shooting only allowed when player is alive
         }
 
+        if (Time.time - lastShotTime < timeBetweenShots) {
+            return; // prevent shooting too fast
+        }
+
+        lastShotTime = Time.time;
         ShotGunShotServerRpc(bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void ShotGunShotServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation) {
-        GameObject explosion = NetworkObjectPool.Singleton.GetNetworkObject(explosionShot, bulletSpawnPosition, bulletSpawnRotation).gameObject;
-
-        // check collision in a cone in front of the player
-        RaycastHit[] hits = Physics.SphereCastAll(bulletSpawnPosition, 0.5f, bulletSpawnRotation * Vector3.forward, coneDistance);
-
-        HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
-
-        foreach (RaycastHit hit in hits) {
-            NetworkPlayer player = hit.collider.gameObject.GetComponentInParent<NetworkPlayer>();
-
-            if (player != null) {
-                hitPlayers.Add(player);
-            }
+        for (int i = 0; i < numberOfBullets; i++) {
+            Vector3 direction = bulletSpawnRotation * Quaternion.Euler(Random.Range(-coneAngle, coneAngle), Random.Range(-coneAngle, coneAngle), 0) * Vector3.forward;
+            GameObject spawnedObject = NetworkObjectPool.Singleton.GetNetworkObject(bulletPrefab, bulletSpawnPosition, Quaternion.LookRotation(direction)).gameObject;
         }
+    }
 
-        foreach (NetworkPlayer player in hitPlayers) {
-            float d = Vector3.Distance(bulletSpawnPosition, player.transform.position) / coneDistance;
+    public void ResetState() {
+        // nothing to reset
+    }
 
-            player.BulletHit(gameObject.transform, damage * (1 - d));
-        }
-
-
+    public void UpdateState() {
+        // nothing to update
     }
 }

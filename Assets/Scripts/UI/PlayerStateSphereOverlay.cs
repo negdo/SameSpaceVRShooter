@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStateSphereOverlay : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerStateSphereOverlay : MonoBehaviour
 
     [SerializeField] private Color redColor = new Color(113f/255f, 9f/255f, 9f/255f, 1);
     [SerializeField] private Color blueColor = new Color(0f/255f, 255f/255f, 255f/255f, 1);
+    [SerializeField] private Slider HealthBarSlider;
 
     [Header("Paint")]
     [SerializeField] private Material paintMaterial;
@@ -43,6 +45,7 @@ public class PlayerStateSphereOverlay : MonoBehaviour
         isOverlayStatic = true;
         isFadeIn = true;
         isFadeOut = false;
+        PlayerHealthUpdate(0);
     }
 
     public void PlayerRespawned() {
@@ -51,14 +54,16 @@ public class PlayerStateSphereOverlay : MonoBehaviour
         isFadeOut = false;
         isOverlayActive = true;
         isOverlayStatic = true;
+        PlayerHealthUpdate(100);
     }
 
     public void PlayerAlive() {
         isFadeIn = false;
         isFadeOut = true;
+        PlayerHealthUpdate(100);
     }
 
-    public void PlayerDamage() {
+    public void PlayerDamage(float health) {
         if (!isOverlayStatic) {
             currentColor = redColor;
             currentAlpha = 1.3f;
@@ -66,6 +71,12 @@ public class PlayerStateSphereOverlay : MonoBehaviour
             isFadeOut = true;
             isOverlayActive = true;
         }
+
+        PlayerHealthUpdate(health);
+    }
+
+    public void PlayerHealthUpdate(float health) {
+        HealthBarSlider.value = health/100f;
     }
 
     public void PlayerPaint(float time) {
@@ -74,8 +85,6 @@ public class PlayerStateSphereOverlay : MonoBehaviour
         isPaintCountdown = true;
         paintCountdown = time;
     }
-
-    
 
 
 

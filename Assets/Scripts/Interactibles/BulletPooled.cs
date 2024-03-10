@@ -9,9 +9,9 @@ interface IMovement {
 
 public class BulletPooled : NetworkBehaviour, IPooledObject, IMovement {
     [SerializeField] float speed = 10f;
-    private float maxLifeTime = 2f;
+    [SerializeField] float maxLifeTime = 2f;
+    [SerializeField] float damage = 30f;
     private float lifeTime = 2f;
-    private float damage = 10f;
     private float explosionRadius = 0.1f;
 
     [SerializeField] private GameObject explosionHitPrefab;

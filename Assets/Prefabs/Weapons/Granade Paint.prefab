@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2173295362
+  GlobalObjectIdHash: 2316710243
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57d4161dce11b945bd82dad9a8720b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfPrefabPoolNumber: 2
+  selfPrefabPoolNumber: 3
 --- !u!114 &1700319665567460428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +168,8 @@ MonoBehaviour:
   throwSpeedMultiplier: 2
   frameAverageDivider: 0.2
   throwAngularVelocityMultiplier: 2
+  willDespawn: 1
+  despawnTime: 30
   grabEnabled:
     m_InternalValue: 1
   isGrabbed:
