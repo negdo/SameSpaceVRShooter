@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 979557252
+  GlobalObjectIdHash: 965268406
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -164,6 +164,9 @@ MonoBehaviour:
   explosionRadius: 3
   damage: 120
   explosionHitPrefab: {fileID: 4021103657954561961, guid: 0208b0243d40e5c4d8188e7584b1b943, type: 3}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 1025
 --- !u!114 &1666535305447715812
 MonoBehaviour:
   m_ObjectHideFlags: 0

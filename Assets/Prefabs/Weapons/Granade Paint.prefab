@@ -179,6 +179,9 @@ MonoBehaviour:
   explosionRadius: 3
   damage: 10
   explosionHitPrefab: {fileID: 4021103657954561961, guid: 0208b0243d40e5c4d8188e7584b1b943, type: 3}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 1025
 --- !u!1001 &4290141236666715287
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class NetworkPlayer : NetworkBehaviour
 
     [SerializeField] private StartingPointHeadCollider startingPointHeadColliders;
 
+
     public float GetHealth() { return health.Value; }
 
     private void Start() {
@@ -49,16 +50,10 @@ public class NetworkPlayer : NetworkBehaviour
         SetPlayerState(PlayerState.Dead);
         deaths.Value++;
 
-        // TODO: check if inside starting point for self team
-        if (startingPointHeadColliders != null) {
-            if (startingPointHeadColliders.CheckIfCollidesTeam(team.Value)) {
-                // inside starting point -> respawn
-                Respawn();
-            }
+        // inside starting point -> respawn
+        if (startingPointHeadColliders.CheckIfCollidesTeam(team.Value)) {
+            Respawn();
         }
-        
-
-
     }
 
 

@@ -7,37 +7,35 @@ public class GranadeDamage : Granade {
     [SerializeField] private float explosionRadius = 3f;
     [SerializeField] private float damage = 120f;
     [SerializeField] private GameObject explosionHitPrefab;
+    [SerializeField] private LayerMask raycastLayerMask;
 
     protected override void Explode() {
         if (IsServer) {
             // Explosion visual effect
             GameObject explosion = NetworkObjectPool.Singleton.GetNetworkObject(explosionHitPrefab, transform.position, Quaternion.identity).gameObject;
+            HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
 
             // Explosion damage to players
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
-            HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
 
             foreach (Collider hit in colliders) {
                 NetworkPlayer hitPlayer = hit.gameObject.GetComponentInParent<NetworkPlayer>();
                 if (hitPlayer != null) {
-                    hitPlayers.Add(hitPlayer);
 
-
-                    /* 
                     // try raycast from granade to hit collider
-                    var ray = new Ray(transform.position, hit.transform.position - transform.position);
-                    // layer mask on default layer
-                    LayerMask layerMask = LayerMask.GetMask("Default");
+                    var ray = new Ray(transform.position, (hit.transform.position - transform.position).normalized);
 
                     RaycastHit hitInfo;
-                    if (Physics.Raycast(ray, out hitInfo, explosionRadius, layerMask)) {
+                    if (Physics.Raycast(ray, out hitInfo, explosionRadius, raycastLayerMask)) {
+                        Debug.Log("original: " + hit.gameObject.name + " raycast: " + hitInfo.collider.gameObject.name);
                         if (hitInfo.collider == hit) {
                             hitPlayers.Add(hitPlayer);
                         }
                     }
-                    */
+
                 }
             }
+
 
             foreach (NetworkPlayer player in hitPlayers) {
                 // Multiply y component by 0.5 as players head is far from the ground

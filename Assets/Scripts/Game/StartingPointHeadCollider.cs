@@ -24,10 +24,12 @@ public class StartingPointHeadCollider : MonoBehaviour {
     public bool CheckIfCollidesTeam(int team) {
         // get colliders that collide with this collider
         Collider selfCollider = gameObject.GetComponent<Collider>();
-        Collider[] colliders = Physics.OverlapBox(selfCollider.bounds.center, selfCollider.bounds.extents, selfCollider.transform.rotation, LayerMask.GetMask("Player"));
+        Collider[] colliders = Physics.OverlapBox(selfCollider.bounds.center, selfCollider.bounds.extents, selfCollider.transform.rotation, LayerMask.GetMask("Starting Point"));
         
         foreach (Collider collider in colliders) {
+            Debug.Log(collider.gameObject.name);
             if (collider.gameObject.CompareTag("StartingPoint")) {
+                Debug.Log("Starting point");
                 TeamColorSetter teamColorSetter = collider.gameObject.GetComponent<TeamColorSetter>();
                 if (teamColorSetter.GetTeam() == team) {
                     return true;
