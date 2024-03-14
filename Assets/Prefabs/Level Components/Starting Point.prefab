@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 579324541
+  GlobalObjectIdHash: 4012565541
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -336,6 +336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAnimator: {fileID: 6556210677272913232}
   buttonCollider: {fileID: 6674454568547656908}
+  buttonPhysicalReady: {fileID: 1604797494044970356}
 --- !u!114 &947830509636737363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +397,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3258184216756378353, guid: 831237db169f3194fbbdfc2a41a14496, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f5edad31ede5f3e4a8e6691478d3eb0b, type: 2}
     - target: {fileID: -3258184216756378353, guid: 831237db169f3194fbbdfc2a41a14496, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
