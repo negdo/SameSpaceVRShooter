@@ -24,12 +24,7 @@ public class NetworkPlayer : NetworkBehaviour
         if (IsServer) {
             health.Value = maxHealth;
 
-            if (GameOperator.Singleton.gameState.Value == State.Lobby) {
-                SetPlayerState(PlayerState.NotReady);
-            } else {
-                SetPlayerState(PlayerState.Alive);
-                AssignTeam(0);
-            }
+            SetPlayerState(PlayerState.NotReady);
         }
     }
 
@@ -49,6 +44,9 @@ public class NetworkPlayer : NetworkBehaviour
         // called on server when player dies
         SetPlayerState(PlayerState.Dead);
         deaths.Value++;
+
+        // add kill to the other team
+        GameOperator.Singleton.AddKillToOtherTeamServerRpc(team.Value);
 
         // inside starting point -> respawn
         if (startingPointHeadColliders.CheckIfCollidesTeam(team.Value)) {
@@ -158,6 +156,14 @@ public class NetworkPlayer : NetworkBehaviour
     public void StartGameClientRpc() { 
         // TODO trigger countdown text on client
     }
+
+
+    public void EndGame() {
+        // called on server
+        SetPlayerState(PlayerState.NotReady);
+        health.Value = maxHealth;
+    }
+
 
     public void SetReady() {
         // called on owner when clicking ready button

@@ -12,10 +12,10 @@ public class GranadePaint : Granade {
         if (IsServer) {
             // Explosion visual effect
             GameObject explosion = NetworkObjectPool.Singleton.GetNetworkObject(explosionHitPrefab, transform.position, Quaternion.identity).gameObject;
+            HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
 
             // Paint on players
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
-            HashSet<NetworkPlayer> hitPlayers = new HashSet<NetworkPlayer>();
 
             foreach (Collider hit in colliders) {
                 NetworkPlayer hitPlayer = hit.gameObject.GetComponentInParent<NetworkPlayer>();

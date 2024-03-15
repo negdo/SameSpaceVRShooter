@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2316710243
+  GlobalObjectIdHash: 2173295362
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkObject: {fileID: 624118627659095388}
   rigidbodyComponent: {fileID: 5909844393627599169}
-  throwSpeedMultiplier: 2
+  throwSpeedMultiplier: 1.5
   frameAverageDivider: 0.2
   throwAngularVelocityMultiplier: 2
   willDespawn: 1
@@ -176,7 +176,7 @@ MonoBehaviour:
     m_InternalValue: 0
   ownerClientId:
     m_InternalValue: 0
-  explosionRadius: 3
+  explosionRadius: 4
   damage: 10
   explosionHitPrefab: {fileID: 4021103657954561961, guid: 0208b0243d40e5c4d8188e7584b1b943, type: 3}
   raycastLayerMask:

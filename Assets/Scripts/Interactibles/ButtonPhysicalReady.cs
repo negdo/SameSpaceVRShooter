@@ -35,4 +35,10 @@ public class ButtonPhysicalReady : MonoBehaviour {
             buttonAnimator.SetBool("isPressed", false);
         }
     }
+
+    public void resetButton() {
+        isPressed = false;
+        presser = null;
+        buttonAnimator.SetBool("isPressed", false);
+    }
 }

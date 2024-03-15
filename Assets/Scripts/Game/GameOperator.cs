@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.VisualScripting;
 
 public class GameOperator : NetworkBehaviour
 {
     public static GameOperator Singleton { get; private set; }
-
-
     public NetworkVariable<int> gameState = new NetworkVariable<int>(State.Lobby);
-
-
     private NetworkPlayer[] players;
+    private NetworkVariable<int> killsTeam0 = new NetworkVariable<int>(0);
+    private NetworkVariable<int> killsTeam1 = new NetworkVariable<int>(0);
     public GameObject[] startingPoints;
-    
+    public NetworkVariable<float> timeLeft = new NetworkVariable<float>(0);
+    private float timeGame = 60;
 
 
     void Start() {
@@ -58,8 +58,7 @@ public class GameOperator : NetworkBehaviour
         LevelComponentGrabable[] grabables = FindObjectsOfType<LevelComponentGrabable>();
 
         // disable grabable objects
-        foreach (LevelComponentGrabable grabable in grabables)
-        {
+        foreach (LevelComponentGrabable grabable in grabables) {
             grabable.SetGrabDisabled();
         }
 
@@ -71,13 +70,11 @@ public class GameOperator : NetworkBehaviour
 
 
         // assign each player to a spawn point
-        for (int i = 0; i < players.Length; i++)
-        {
+        for (int i = 0; i < players.Length; i++) {
             int team = 0;
             float closestPointDistance = Mathf.Infinity;
 
-            for (int j = 0; j < startingPoints.Length; j++)
-            {
+            for (int j = 0; j < startingPoints.Length; j++) {
                 // get child object called "Head"
                 Transform Head = players[i].transform.Find("Head");
 
@@ -92,26 +89,88 @@ public class GameOperator : NetworkBehaviour
             players[i].StartGame();
         }
 
+        // set time left
+        timeLeft.Value = timeGame;
+
+        // reset kills
+        killsTeam0.Value = 0;
+        killsTeam1.Value = 0;
+
         StartGameClientRpc();
-
-
     }
 
     [ClientRpc]
     private void StartGameClientRpc() {
         Debug.Log("Starting game client rpc");
 
-        /* TODO: remove, ker to delam že v player statu
-        // raise all walls
-        Wall[] walls = FindObjectsOfType<Wall>();
-        foreach (Wall wall in walls) {
-            wall.riseWall();
-        } */
-
         // drop all starting point ready buttons
         StartingPoint[] startingPoints = FindObjectsOfType<StartingPoint>();
         foreach (StartingPoint startingPoint in startingPoints) {
             startingPoint.SetStateGame();
+        }
+    }
+
+
+    void Update() {
+        if (IsServer) {
+            if (gameState.Value == State.Game) {
+                timeLeft.Value = Mathf.Max(0, timeLeft.Value - Time.deltaTime);
+                if (timeLeft.Value == 0) {
+                    EndGame();
+                }
+            }
+        }
+    }
+
+    private void EndGame() {
+        // called on server
+        Debug.Log("Ending game");
+        gameState.Value = State.End;
+
+        // get all LevelComponentGrabable objects in the scene
+        LevelComponentGrabable[] grabables = FindObjectsOfType<LevelComponentGrabable>();
+
+        // disable grabable objects
+        foreach (LevelComponentGrabable grabable in grabables) {
+            grabable.SetGrabEnabled();
+        }
+
+        // get all spawn points and reset teams
+        startingPoints = GameObject.FindGameObjectsWithTag("StartingPoint");
+        for (int i = 0; i < startingPoints.Length; i++) {
+            startingPoints[i].GetComponent<TeamColorSetter>().AssignTeam(-1);
+        }
+
+        // reset teams of all players
+        for (int i = 0; i < players.Length; i++) {
+            players[i].AssignTeam(-1);
+            players[i].EndGame();
+        }
+
+        EndGameClientRpc();
+    }
+
+    [ClientRpc]
+    private void EndGameClientRpc() {
+        Debug.Log("Ending game client rpc");
+
+        // reset all starting points
+        StartingPoint[] startingPoints = FindObjectsOfType<StartingPoint>();
+        foreach (StartingPoint startingPoint in startingPoints) {
+            startingPoint.SetStateLoby();
+        }
+    }
+
+    public int[] getKills() {
+        return new int[] {killsTeam0.Value, killsTeam1.Value};
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AddKillToOtherTeamServerRpc(int team) {
+        if (team == 1) {
+            killsTeam0.Value++;
+        } else {
+            killsTeam1.Value++;
         }
     }
         

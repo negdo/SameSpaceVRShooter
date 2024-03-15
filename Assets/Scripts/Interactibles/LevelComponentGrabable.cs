@@ -60,7 +60,7 @@ public class LevelComponentGrabable : Grabable
     }
 
 
-    [ServerRpc]
+    [ServerRpc (RequireOwnership = false)]
     private void ReturnOwnershipServerRpc(ServerRpcParams rpcParams = default) {
         // Set ownership to server
         isGrabbed.Value = false;
@@ -92,12 +92,18 @@ public class LevelComponentGrabable : Grabable
         }
     }
 
-    public void SetGrabEnabled(bool enabled) {
-        grabEnabled.Value = enabled;
+    public void SetGrabEnabled() {
+        // called on server GameOperator
+        grabEnabled.Value = true;
+        isGrabbed.Value = false;
+        isGrabbedLocal = false;
     }
 
     public void SetGrabDisabled() {
+        // called on server GameOperator
         grabEnabled.Value = false;
+        isGrabbed.Value = false;
+        isGrabbedLocal = false;
 
         if (isGrabbed.Value) {
             ReturnOwnershipServerRpc();

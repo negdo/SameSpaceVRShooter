@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3099892838
+  GlobalObjectIdHash: 4099333149
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkObject: {fileID: 2721191812642357204}
   rigidbodyComponent: {fileID: 8482771633354235896}
-  throwSpeedMultiplier: 2
+  throwSpeedMultiplier: 1.5
   frameAverageDivider: 0.2
   throwAngularVelocityMultiplier: 2
   willDespawn: 1

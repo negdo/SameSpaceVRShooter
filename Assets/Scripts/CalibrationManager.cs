@@ -11,6 +11,7 @@ public class CalibrationManager : MonoBehaviour
 
     [SerializeField] InputActionReference CalibrationRightReference;
     [SerializeField] InputActionReference CalibrationLeftReference;
+    [SerializeField] InputActionReference CalibrationFloorReference;
 
     private bool rightCalibrationPressed = false;
     private bool leftCalibrationPressed = false;
@@ -21,6 +22,7 @@ public class CalibrationManager : MonoBehaviour
         CalibrationLeftReference.action.performed += CalibrateLeftPressed;
         CalibrationLeftReference.action.canceled += CalibrateLeftReleased;
         CalibrationRightReference.action.canceled += CalibrateRightReleased;
+        CalibrationFloorReference.action.performed += CalibrateHeight;
     }
 
     private void OnDestroy()
@@ -29,6 +31,7 @@ public class CalibrationManager : MonoBehaviour
         CalibrationLeftReference.action.performed -= CalibrateLeftPressed;
         CalibrationLeftReference.action.canceled -= CalibrateLeftReleased;
         CalibrationRightReference.action.canceled -= CalibrateRightReleased;
+        CalibrationFloorReference.action.performed -= CalibrateHeight;
     }
 
     private void CalibrateRightPressed(InputAction.CallbackContext obj)
@@ -88,5 +91,15 @@ public class CalibrationManager : MonoBehaviour
 
         // Rotate the player
         player.transform.rotation = newRotation;
+    }
+
+    private void CalibrateHeight(InputAction.CallbackContext obj)
+    {
+        Debug.Log("CalibrateHeight");
+        // get position of right controller
+        Vector3 rightControllerPosition = rightController.transform.position;
+
+        // set y position of player to y position of right controller
+        player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - rightControllerPosition.y + 0.05f, player.transform.position.z);
     }
 }

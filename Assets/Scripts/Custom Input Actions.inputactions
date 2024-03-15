@@ -1,5 +1,5 @@
 {
-    "name": "XRI Custom Input Actions",
+    "name": "Custom Input Actions",
     "maps": [
         {
             "name": "Calibration",
@@ -18,6 +18,15 @@
                     "name": "CalibrationLeft",
                     "type": "Button",
                     "id": "12bb8207-ceb1-4d43-ae1b-652a9732ea56",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CalibrationFloor",
+                    "type": "Button",
+                    "id": "47df35f2-63d9-47b3-80db-16156cd66354",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold(duration=1)",
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CalibrationLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9df9d6f6-c649-4233-b6fc-8ab9f98a9a54",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CalibrationFloor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

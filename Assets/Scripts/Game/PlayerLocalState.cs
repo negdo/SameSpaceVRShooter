@@ -12,7 +12,7 @@ public class PlayerLocalState : MonoBehaviour
     public static PlayerLocalState Singleton { get; private set; }
 
     [SerializeField] private PlayerStateSphereOverlay playerStateSphereOverlay;
-    [SerializeField] private TextMeshPro playerHintText;
+    [SerializeField] private TextMeshProUGUI playerHintText;
 
     private NetworkPlayer localNetworkPlayer = null;
 
@@ -43,11 +43,9 @@ public class PlayerLocalState : MonoBehaviour
     }
 
     public void SetPlayerState(int state) {
-        if (localPlayerState != state) {
-            CallUIOverlay(state);
-            CallOtherUpdates(state);
-            localPlayerState = state;
-        }
+        CallUIOverlay(state);
+        CallOtherUpdates(state);
+        localPlayerState = state;
     }
 
     public int GetPlayerState() {
@@ -75,7 +73,6 @@ public class PlayerLocalState : MonoBehaviour
 
         } else if (state == PlayerState.Dead) {
             playerStateSphereOverlay.PlayerDied();
-
             playerHintText.text = "You Died";
             playerHintText.color = new Color(0.8f, 0.2f, 0, 1);
 
@@ -83,8 +80,7 @@ public class PlayerLocalState : MonoBehaviour
         } else if (state == PlayerState.Respawning) {
             playerStateSphereOverlay.PlayerRespawned();
             playerHintText.text = "Respawning";
-
-
+            playerHintText.color = new Color(1, 1, 1, 1);
 
         } else if (state == PlayerState.NotReady) {
             playerHintText.text = "Press the button to ready up";
