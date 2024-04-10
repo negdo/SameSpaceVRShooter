@@ -7,8 +7,7 @@ public abstract class ButtonArea : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Button Pressed" + other.gameObject);
-        if (other.gameObject.tag == "Interactor") {
+        if (other.gameObject.tag == "Cursor") {
             OnButtonAction();
         }
     }

@@ -10,6 +10,9 @@ public class HandGun : PhysicsGrabable, IPooledObject {
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private float timeBetweenShots = 0.3f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSourceGunShot;
+
     private float lastShotTime = 0f;
 
     public void Awake() {
@@ -31,6 +34,7 @@ public class HandGun : PhysicsGrabable, IPooledObject {
         }
         
         lastShotTime = Time.time;
+        PlayAudioGunShotClientRpc();
         SpawnBulletServerRpc(bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 
@@ -38,6 +42,11 @@ public class HandGun : PhysicsGrabable, IPooledObject {
     [ServerRpc(RequireOwnership = false)]
     private void SpawnBulletServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation) {
         GameObject spawnedObject = NetworkObjectPool.Singleton.GetNetworkObject(bulletPrefab, bulletSpawnPosition, bulletSpawnRotation).gameObject;
+    }
+
+    [ClientRpc]
+    private void PlayAudioGunShotClientRpc() {
+        audioSourceGunShot.PlayOneShot(audioSourceGunShot.clip);
     }
 
     public void ResetState() {

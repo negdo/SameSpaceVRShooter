@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GranadePaint : Granade {
+
+    [Header("Explosion")]
     [SerializeField] private float explosionRadius = 3f;
     [SerializeField] private float damage = 20f;
     [SerializeField] private GameObject explosionHitPrefab;
@@ -26,7 +28,6 @@ public class GranadePaint : Granade {
 
                     RaycastHit hitInfo;
                     if (Physics.Raycast(ray, out hitInfo, explosionRadius, raycastLayerMask)) {
-                        Debug.Log("original: " + hit.gameObject.name + " raycast: " + hitInfo.collider.gameObject.name);
                         if (hitInfo.collider == hit) {
                             hitPlayers.Add(hitPlayer);
                         }

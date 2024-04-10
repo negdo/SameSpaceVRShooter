@@ -11,15 +11,21 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
     protected NetworkVariable<bool> isTriggered = new NetworkVariable<bool>(false);
     protected bool isExploded = false;
     protected NetworkPooledObject networkPooledObject;
+    [SerializeField] private ParticleSystem triggeredParticles;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSourceExplosion;
 
     public void Start() {
         networkPooledObject = gameObject.GetComponent<NetworkPooledObject>();
+        triggeredParticles.Pause();
     }
 
     public void ResetState() {
         lifeTime = maxLifeTime;
         isTriggered.Value = false;
         isExploded = false;
+        triggeredParticles.Pause();
     }
 
     public void UpdateState() {
@@ -29,11 +35,17 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
                 lifeTime -= Time.deltaTime;
                 if (lifeTime <= 0 && !isExploded) {
                     isExploded = true;
+                    PlayAudioExplosionClientRpc();
                     Explode();
-                    networkPooledObject.ReturnToPool();
+                    // delay 0.1 second after explosion sound
+                    Invoke(nameof(delayedReturnToPool), 0.5f);
                 }
-            }
+            } 
         }
+    }
+
+    private void delayedReturnToPool() {
+        networkPooledObject.ReturnToPool();
     }
 
     public override void OnRelease() {
@@ -62,6 +74,18 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
     [ServerRpc(RequireOwnership = false)]
     private void TriggerGranadeServerRpc() {
         isTriggered.Value = true;
+        TriggerGranadeClientRpc();
+    }
+
+    [ClientRpc]
+    private void TriggerGranadeClientRpc() {
+        triggeredParticles.Play();
+    }
+
+    [ClientRpc]
+    protected void PlayAudioExplosionClientRpc() {
+        audioSourceExplosion.PlayOneShot(audioSourceExplosion.clip);
+        triggeredParticles.Pause();
     }
 
 

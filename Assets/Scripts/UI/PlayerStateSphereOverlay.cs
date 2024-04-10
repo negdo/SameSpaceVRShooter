@@ -20,6 +20,7 @@ public class PlayerStateSphereOverlay : MonoBehaviour
 
     [SerializeField] private Color redColor = new Color(113f/255f, 9f/255f, 9f/255f, 1);
     [SerializeField] private Color blueColor = new Color(0f/255f, 255f/255f, 255f/255f, 1);
+    [SerializeField] private Color greenColor = new Color(100f/255f, 255f/255f, 0f/255f, 1);
     [SerializeField] private Slider HealthBarSlider;
 
     [Header("Paint")]
@@ -66,6 +67,18 @@ public class PlayerStateSphereOverlay : MonoBehaviour
     public void PlayerDamage(float health) {
         if (!isOverlayStatic) {
             currentColor = redColor;
+            currentAlpha = 1.3f;
+            isOverlayActive = true;
+            isFadeOut = true;
+            isOverlayActive = true;
+        }
+
+        PlayerHealthUpdate(health);
+    }
+
+    public void PlayerHeal(float health) {
+        if (!isOverlayStatic) {
+            currentColor = greenColor;
             currentAlpha = 1.3f;
             isOverlayActive = true;
             isFadeOut = true;

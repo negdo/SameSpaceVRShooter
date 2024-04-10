@@ -104,6 +104,14 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+    public void HealingHit(Transform transform, float healing) {
+        // called on server
+        if (GameOperator.Singleton.gameState.Value == State.Game && state.Value == PlayerState.Alive) {
+            health.Value = Mathf.Min(maxHealth, health.Value + healing);
+            HealClientRpc(health.Value);
+        }
+    }
+
 
     public void PaintHit(Transform transform, float damage) {
         // called on server
@@ -116,6 +124,11 @@ public class NetworkPlayer : NetworkBehaviour
     [ClientRpc]
     public void DamageClientRpc(float health) { 
         if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerDamage(health); 
+    }
+
+    [ClientRpc]
+    public void HealClientRpc(float health) { 
+        if (IsOwner) PlayerStateSphereOverlay.Singleton.PlayerHeal(health); 
     }
 
     [ClientRpc]
