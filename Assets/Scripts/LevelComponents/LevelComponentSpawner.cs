@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class LevelComponentSpawner : MonoBehaviour{
+public class LevelComponentSpawner : MonoBehaviour {
     [Header("Component prefabs")]
     [SerializeField] private GameObject WallPrefab;
     [SerializeField] private GameObject WeaponSpawnPointPrefab;
@@ -14,6 +14,7 @@ public class LevelComponentSpawner : MonoBehaviour{
     [Header("Other")]
     [SerializeField] private InputActionReference SpawnWallAction;
     [SerializeField] private MeshRenderer MeshRenderer;
+    [SerializeField] private LevelComponentSpawnerSecond levelComponentSpawnerSecond;
     private int state = SpawningState.PointOne;
     private Vector3 PointOne;
     private GameObject LastSpawnedWall;
@@ -45,52 +46,32 @@ public class LevelComponentSpawner : MonoBehaviour{
     }
 
     private void onSpawnWallAction(InputAction.CallbackContext obj) {
+        Debug.Log("Spawning wall action 001");
         if (GameOperator.Singleton.gameState.Value == State.Game) {
             return;
         }
         
         if (state == SpawningState.PointOne) {
             if (LevelEditorType == LevelEditorType.Wall) {
-                SpawnWallServerRpc(transform.position);
+                levelComponentSpawnerSecond.SpawnObject1(transform.position);
 
             }else if (LevelEditorType == LevelEditorType.WeaponSpawn) {
-                SpawnWeaponSpawnPointServerRpc(transform.position);
+                levelComponentSpawnerSecond.SpawnObject2(transform.position);
 
             } else if (LevelEditorType == LevelEditorType.TransparentWall) {
                 state = SpawningState.PointTwo;
                 PointOne = transform.position;
                 LastSpawnedWall = Instantiate(TransparentWallPrefab, PointOne, Quaternion.identity);
+            } else if (LevelEditorType == LevelEditorType.WallSmall) {
+                levelComponentSpawnerSecond.SpawnObject4(transform.position);
             }
         } else if (state == SpawningState.PointTwo) {
             if (LevelEditorType == LevelEditorType.TransparentWall) {
                 state = SpawningState.PointOne;
                 Destroy(LastSpawnedWall);
-                SpawnTransparentWallServerRpc(PointOne, transform.position);
+                levelComponentSpawnerSecond.SpawnObject3(PointOne, transform.position);
             }   
         }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnWallServerRpc(Vector3 position) {
-        Debug.Log("Spawning wall ServerRpc");
-        GameObject spawnedWall = Instantiate(WallPrefab, position, Quaternion.identity);
-        spawnedWall.GetComponent<NetworkObject>().Spawn();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnWeaponSpawnPointServerRpc(Vector3 position) {
-        GameObject spawnedWeaponSpawnPoint = Instantiate(WeaponSpawnPointPrefab, position, Quaternion.identity);
-        spawnedWeaponSpawnPoint.GetComponent<NetworkObject>().Spawn();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnTransparentWallServerRpc(Vector3 pointOne, Vector3 pointTwo) {
-        GameObject spawnedTransparentWall = Instantiate(TransparentWallPrefab, pointOne, Quaternion.identity);
-        spawnedTransparentWall.transform.LookAt(pointTwo);
-        spawnedTransparentWall.transform.Rotate(0, -90, 0);
-        spawnedTransparentWall.transform.localScale = new Vector3(Vector3.Distance(pointOne, pointTwo), 1, 1);
-        spawnedTransparentWall.GetComponent<NetworkObject>().Spawn();
-
     }
 
     public void SetLevelEditorType(LevelEditorType type) {

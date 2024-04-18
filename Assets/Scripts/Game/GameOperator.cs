@@ -13,7 +13,8 @@ public class GameOperator : NetworkBehaviour
     private NetworkVariable<int> killsTeam1 = new NetworkVariable<int>(0);
     public GameObject[] startingPoints;
     public NetworkVariable<float> timeLeft = new NetworkVariable<float>(0);
-    private float timeGame = 60;
+    public NetworkVariable<int> gameMode = new NetworkVariable<int>(GameMode.TeamDeathmatch);
+    private float timeGame = 180;
 
 
     void Start() {
@@ -165,8 +166,8 @@ public class GameOperator : NetworkBehaviour
         return new int[] {killsTeam0.Value, killsTeam1.Value};
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void AddKillToOtherTeamServerRpc(int team) {
+    public void AddKillToOtherTeam(int team) {
+        // called on server
         if (team == 1) {
             killsTeam0.Value++;
         } else {
@@ -185,5 +186,12 @@ public static class State {
     public const int Lobby = 0;
     public const int Game = 1;
     public const int End = 2;
+}
+
+public static class GameMode {
+    public const int TeamDeathmatch = 1;
+    public const int CaptureTheFlag = 2;
+    public const int LastManStanding = 3;
+    public const int KingOfTheHill = 4;
 }
 

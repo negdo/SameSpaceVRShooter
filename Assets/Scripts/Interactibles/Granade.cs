@@ -12,13 +12,12 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
     protected bool isExploded = false;
     protected NetworkPooledObject networkPooledObject;
     [SerializeField] private ParticleSystem triggeredParticles;
-
-    [Header("Audio")]
-    [SerializeField] private AudioSource audioSourceExplosion;
+    AudioPlayer audioPlayer;
 
     public void Start() {
         networkPooledObject = gameObject.GetComponent<NetworkPooledObject>();
         triggeredParticles.Pause();
+        audioPlayer = GetComponent<AudioPlayer>();
     }
 
     public void ResetState() {
@@ -28,6 +27,12 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
         triggeredParticles.Pause();
     }
 
+    private void OnEnable() {
+        if (!IsServer) {
+            triggeredParticles.Pause();
+        }
+    }
+
     public void UpdateState() {
         // called on server
         if (IsServer) {
@@ -35,7 +40,8 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
                 lifeTime -= Time.deltaTime;
                 if (lifeTime <= 0 && !isExploded) {
                     isExploded = true;
-                    PlayAudioExplosionClientRpc();
+                    PlayExplosionClientRpc();
+                    audioPlayer.playAudio();
                     Explode();
                     // delay 0.1 second after explosion sound
                     Invoke(nameof(delayedReturnToPool), 0.5f);
@@ -83,8 +89,7 @@ public abstract class Granade : PhysicsGrabable, IPooledObject {
     }
 
     [ClientRpc]
-    protected void PlayAudioExplosionClientRpc() {
-        audioSourceExplosion.PlayOneShot(audioSourceExplosion.clip);
+    protected void PlayExplosionClientRpc() {
         triggeredParticles.Pause();
     }
 

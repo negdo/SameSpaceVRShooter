@@ -6,8 +6,9 @@ public class ButtonAreaResume : ButtonArea
 {
     [SerializeField] private PauseMenu pauseMenu;
 
-    protected override void OnButtonAction()
-    {
+    protected override void OnButtonActionHand() {
         pauseMenu.OnSettingsButton();
     }
+
+    protected override void OnButtonAction() {}
 }

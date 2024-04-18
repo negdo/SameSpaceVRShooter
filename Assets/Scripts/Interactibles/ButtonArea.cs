@@ -9,8 +9,11 @@ public abstract class ButtonArea : MonoBehaviour
     {
         if (other.gameObject.tag == "Cursor") {
             OnButtonAction();
+        } else if (other.gameObject.tag == "Interactor") {
+            OnButtonActionHand();
         }
     }
 
     protected abstract void OnButtonAction();
+    protected abstract void OnButtonActionHand();
 }

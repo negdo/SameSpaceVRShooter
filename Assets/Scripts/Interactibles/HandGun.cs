@@ -10,14 +10,17 @@ public class HandGun : PhysicsGrabable, IPooledObject {
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private float timeBetweenShots = 0.3f;
 
-    [Header("Audio")]
-    [SerializeField] private AudioSource audioSourceGunShot;
+    AudioPlayer audioPlayer;
 
     private float lastShotTime = 0f;
 
     public void Awake() {
         // check if bulletPrefab has a NetworkObject component
         Assert.IsNotNull(bulletPrefab.GetComponent<NetworkObject>(), $"{nameof(HandGun)}: bulletPrefab has no {nameof(NetworkObject)} component.");
+    }
+
+    public void Start() {
+        audioPlayer = GetComponent<AudioPlayer>();
     }
 
     public override void OnPrimaryAction() {
@@ -34,7 +37,8 @@ public class HandGun : PhysicsGrabable, IPooledObject {
         }
         
         lastShotTime = Time.time;
-        PlayAudioGunShotClientRpc();
+        audioPlayer.playAudio();
+        Debug.Log("Shooting bullet");
         SpawnBulletServerRpc(bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 
@@ -42,11 +46,6 @@ public class HandGun : PhysicsGrabable, IPooledObject {
     [ServerRpc(RequireOwnership = false)]
     private void SpawnBulletServerRpc(Vector3 bulletSpawnPosition, Quaternion bulletSpawnRotation) {
         GameObject spawnedObject = NetworkObjectPool.Singleton.GetNetworkObject(bulletPrefab, bulletSpawnPosition, bulletSpawnRotation).gameObject;
-    }
-
-    [ClientRpc]
-    private void PlayAudioGunShotClientRpc() {
-        audioSourceGunShot.PlayOneShot(audioSourceGunShot.clip);
     }
 
     public void ResetState() {

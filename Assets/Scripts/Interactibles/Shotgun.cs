@@ -10,11 +10,14 @@ public class Shotgun : PhysicsGrabable, IPooledObject {
     [SerializeField] private float coneAngle = 15.0f;
     [SerializeField] private float timeBetweenShots = 0.7f;
 
-    [Header("Audio")]
-    [SerializeField] private AudioSource audioSourceGunShot;
+    AudioPlayer audioPlayer;
 
 
     private float lastShotTime = 0f;
+
+    void Start() {
+        audioPlayer = GetComponent<AudioPlayer>();
+    }
 
 
     public override void OnPrimaryAction() {
@@ -31,7 +34,7 @@ public class Shotgun : PhysicsGrabable, IPooledObject {
         }
 
         lastShotTime = Time.time;
-        PlayAudioGunShotClientRpc();
+        audioPlayer.playAudio();
         ShotGunShotServerRpc(bulletSpawnPoint.position, bulletSpawnPoint.rotation);
     }
 
@@ -41,11 +44,6 @@ public class Shotgun : PhysicsGrabable, IPooledObject {
             Vector3 direction = bulletSpawnRotation * Quaternion.Euler(Random.Range(-coneAngle, coneAngle), Random.Range(-coneAngle, coneAngle), 0) * Vector3.forward;
             GameObject spawnedObject = NetworkObjectPool.Singleton.GetNetworkObject(bulletPrefab, bulletSpawnPosition, Quaternion.LookRotation(direction)).gameObject;
         }
-    }
-
-    [ClientRpc]
-    private void PlayAudioGunShotClientRpc() {
-        audioSourceGunShot.PlayOneShot(audioSourceGunShot.clip);
     }
 
     public void ResetState() {

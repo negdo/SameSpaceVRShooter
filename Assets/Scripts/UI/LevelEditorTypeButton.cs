@@ -27,6 +27,8 @@ public class LevelEditorTypeButton : ButtonArea {
         buttonReseter.ResetButtons(this);
     }
 
+    protected override void OnButtonActionHand() {}
+
 
     
 }
@@ -34,5 +36,6 @@ public class LevelEditorTypeButton : ButtonArea {
 public enum LevelEditorType {
     Wall,
     TransparentWall,
-    WeaponSpawn
+    WeaponSpawn,
+    WallSmall
 }

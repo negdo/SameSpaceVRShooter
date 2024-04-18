@@ -14,24 +14,20 @@ public class PauseMenu : MonoBehaviour
     private bool showMenu = false;
 
 
-    private void Start()
-    {
+    private void Start() {
         Canvas.SetActive(false);
         showMenu = false;
     }
 
-    private void Awake()
-    {
+    private void Awake() {
         SettingsButtonAction.action.performed += _ => OnSettingsButton();
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         SettingsButtonAction.action.performed -= _ => OnSettingsButton();
     }
 
-    public void OnSettingsButton()
-    {
+    public void OnSettingsButton() {
         if (showMenu) {
             Canvas.SetActive(false);
             showMenu = false;
@@ -42,13 +38,9 @@ public class PauseMenu : MonoBehaviour
             Vector3 newPostion = CameraObject.transform.position;
             newPostion += CameraObject.transform.forward * distance;
 
-
             transform.position = newPostion;
             transform.rotation = CameraObject.transform.rotation;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
         }
     }
-
-
-
 }

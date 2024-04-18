@@ -48,6 +48,8 @@ GameObject:
   - component: {fileID: 80185577805285908}
   - component: {fileID: 702711124850444554}
   - component: {fileID: 5974714929970177787}
+  - component: {fileID: 5053202070755715522}
+  - component: {fileID: 8714365413139695444}
   m_Layer: 0
   m_Name: Gun Normal
   m_TagString: Untagged
@@ -177,7 +179,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2862668420837030742, guid: eb3a1e2592e941a4dba6501aacc540c8, type: 3}
   bulletSpawnPoint: {fileID: 1283051988176496306}
   timeBetweenShots: 0.15
-  audioSourceGunShot: {fileID: 5974714929970177787}
 --- !u!65 &4940522417940826449
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -329,6 +330,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5053202070755715522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984491301632382032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b310166e2be624cb704d2a124bc2b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 5974714929970177787}
+--- !u!114 &8714365413139695444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984491301632382032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b310166e2be624cb704d2a124bc2b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 5974714929970177787}
 --- !u!1001 &1871065057443089595
 PrefabInstance:
   m_ObjectHideFlags: 0

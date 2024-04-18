@@ -42,11 +42,12 @@ public class NetworkPlayer : NetworkBehaviour
 
     protected void Die() {
         // called on server when player dies
+        Debug.Log("Die");
         SetPlayerState(PlayerState.Dead);
         deaths.Value++;
 
         // add kill to the other team
-        GameOperator.Singleton.AddKillToOtherTeamServerRpc(team.Value);
+        GameOperator.Singleton.AddKillToOtherTeam(team.Value);
 
         // inside starting point -> respawn
         if (startingPointHeadColliders.CheckIfCollidesTeam(team.Value)) {

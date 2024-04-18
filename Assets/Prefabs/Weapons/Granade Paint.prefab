@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1666535305447715812}
   - component: {fileID: 1700319665567460428}
   - component: {fileID: 8732816484083321099}
+  - component: {fileID: 199067154484616890}
   m_Layer: 0
   m_Name: Granade Paint
   m_TagString: Untagged
@@ -52,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 965268406
+  GlobalObjectIdHash: 2316710243
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -179,7 +180,6 @@ MonoBehaviour:
   ownerClientId:
     m_InternalValue: 0
   triggeredParticles: {fileID: 8642719858042511966}
-  audioSourceExplosion: {fileID: 8732816484083321099}
   explosionRadius: 4
   damage: 10
   explosionHitPrefab: {fileID: 725748389856807714, guid: fa03163757d71e04ab880f3a3a7b9e9d, type: 3}
@@ -282,6 +282,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &199067154484616890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8738665515460145976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b310166e2be624cb704d2a124bc2b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 8732816484083321099}
 --- !u!1001 &4290141236666715287
 PrefabInstance:
   m_ObjectHideFlags: 0

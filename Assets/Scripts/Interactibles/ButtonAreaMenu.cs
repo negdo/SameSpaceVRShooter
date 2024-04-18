@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class ButtonAreaMenu : ButtonArea
 {
-    protected override void OnButtonAction()
-    {
+    protected override void OnButtonAction() {}
+
+    protected override void OnButtonActionHand() {
+        Debug.Log("Menu button pressed");
         NetworkManager.Singleton.Shutdown();
         // destroy the network manager
         Destroy(NetworkManager.Singleton.gameObject);

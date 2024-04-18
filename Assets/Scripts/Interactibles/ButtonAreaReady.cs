@@ -28,8 +28,7 @@ public class ButtonAreaReady : ButtonArea
         UpdateText();
     }
 
-    protected override void OnButtonAction() {
-        Debug.Log("Button Pressed");
+    protected override void OnButtonActionHand() {
         if (Time.time - lastClickTime < clickDelay) {
             UpdateText();
             return;
@@ -43,4 +42,6 @@ public class ButtonAreaReady : ButtonArea
         }
         UpdateText();
     }
+
+    protected override void OnButtonAction() {}
 }

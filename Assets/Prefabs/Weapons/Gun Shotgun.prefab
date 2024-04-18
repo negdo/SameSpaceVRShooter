@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 80185577805285908}
   - component: {fileID: 9172015275837355534}
   - component: {fileID: 6520639027715656874}
+  - component: {fileID: 9217917692156208081}
   m_Layer: 0
   m_Name: Gun Shotgun
   m_TagString: Untagged
@@ -179,7 +180,6 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 1283051988176496306}
   coneAngle: 10
   timeBetweenShots: 0.7
-  audioSourceGunShot: {fileID: 6520639027715656874}
 --- !u!65 &4940522417940826449
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -331,6 +331,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9217917692156208081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984491301632382032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b310166e2be624cb704d2a124bc2b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 6520639027715656874}
 --- !u!1001 &2937287186035212606
 PrefabInstance:
   m_ObjectHideFlags: 0
