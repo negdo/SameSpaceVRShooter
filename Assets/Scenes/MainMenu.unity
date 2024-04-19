@@ -2309,6 +2309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackedObject: {fileID: 500442353}
   material: {fileID: 2100000, guid: 3c7e8ac550cd5334bb4dd4d9db002891, type: 2}
+  material2: {fileID: 2100000, guid: 9babcaa0cedde8f4e9b15669b8fa095d, type: 2}
 --- !u!65 &595869475
 BoxCollider:
   m_ObjectHideFlags: 0

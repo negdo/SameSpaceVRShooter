@@ -47,6 +47,8 @@ public class PlayerStateSphereOverlay : MonoBehaviour
         isFadeIn = true;
         isFadeOut = false;
         PlayerHealthUpdate(0);
+
+        paintCountdown = 0;
     }
 
     public void PlayerRespawned() {

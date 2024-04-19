@@ -9,10 +9,12 @@ public class ReactiveGridMaterialUpdater : MonoBehaviour
     // reference to material
     [SerializeField] private Material material;
 
+    [SerializeField] private Material material2;
+
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         material.SetVector("_ObjectPosition", trackedObject.transform.position);
+        material2.SetVector("_ObjectPosition", trackedObject.transform.position);
     }
 }
