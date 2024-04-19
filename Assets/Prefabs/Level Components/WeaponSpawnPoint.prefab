@@ -288,5 +288,6 @@ MonoBehaviour:
   - {fileID: 8738665515460145976, guid: 4aac3b972231863438c72dd2dd3b21d9, type: 3}
   - {fileID: 8984491301632382032, guid: a19a7fc228065dc43a46cb9e011e6f42, type: 3}
   - {fileID: 8984491301632382032, guid: 683fd03b571db7f498782fe90f95a95b, type: 3}
+  - {fileID: 8738665515460145976, guid: 92d8435bb9bc0c44288fa0b57311bd96, type: 3}
   spawnTime: 5
   speed: 8
