@@ -40,7 +40,7 @@ Material:
     - _cell_size: 0.25
     m_Colors:
     - ObjectPosition: {r: 0, g: 1.55, b: 0, a: 0}
-    - _ObjectPosition: {r: 0.42872244, g: 0.76522774, b: 0.34132868, a: 0}
+    - _ObjectPosition: {r: 0.06539093, g: 1.1164503, b: 0.052230816, a: 0}
     - _Object_Position: {r: 0, g: 1.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2559667596355048457

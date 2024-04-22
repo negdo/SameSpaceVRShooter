@@ -26,7 +26,7 @@ namespace Keyboard
         public UnityAction<bool> OnKeysStateChange;
         public UnityEvent onFirstKeyPress;
 
-        public void RaiseKeyPressedEvent(string key) =>
+        public void RaiseKeyPressedEvent(string key) => 
             OnKeyPressed?.Invoke(key);
 
         public void RaiseKeyColorsChangedEvent(Color normalColor, Color highlightedColor, Color pressedColor,

@@ -62,9 +62,15 @@ namespace Keyboard
 
         private void KeyPress(string key)
         {
-
-            if (outputField.text.Length < 3)
+            if (key == "←") {
+                // delete last character
+                if (outputField.text.Length > 10)
+                {
+                    outputField.text = outputField.text.Substring(0, outputField.text.Length - 1);
+                }
+            } else if (outputField.text.Length < 3)
             {
+
                 outputField.text = "192.168.1." + key;
             } else if (outputField.text.Length < 13)
             {
