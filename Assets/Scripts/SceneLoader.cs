@@ -11,11 +11,7 @@ public class SceneLoader : MonoBehaviour
     public static bool isHost = true;
     public static bool isServer = false;
 
-    private Vector3 playerPositionCalibration = new Vector3(0, 0, 0);
-    private Quaternion playerRotationCalibration = new Quaternion(0, 0, 0, 0);
-
-    public static void LoadMultiplayerSceneHost()
-    {
+    public static void LoadMultiplayerSceneHost() {
         Debug.Log("Loading Multiplayer Scene as Host");
         isHost = true;
 
@@ -25,8 +21,7 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("MultiplayerScene");
     }
 
-    public static void LoadMultiplayerSceneClient()
-    {
+    public static void LoadMultiplayerSceneClient() {
         Debug.Log("Loading Multiplayer Scene as Client");
         isHost = false;
 
@@ -36,11 +31,24 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("MultiplayerScene");
     }
 
-    public static void LoadMultiplayerSceneServer()
-    {
+    public static void LoadMultiplayerSceneServer() {
         Debug.Log("Loading Multiplayer Scene as Server");
         isHost = true;
         isServer = true;
         SceneManager.LoadScene("MultiplayerScene");
     }
+
+
+    public static void LoadMainMenu() {
+        Debug.Log("Loading Main Menu");
+
+        CalibrationPositionHolder calibrationPositionHolder = FindObjectOfType<CalibrationPositionHolder>();
+        if (calibrationPositionHolder != null) {
+            calibrationPositionHolder.updatePlayerPosition();
+        }
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
 }

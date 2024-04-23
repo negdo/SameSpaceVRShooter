@@ -14,7 +14,6 @@ public class Interactor : MonoBehaviour
 
     [Header("Grab Settings")]
     [SerializeField] private float grabRadius = 3.0f;
-
     [SerializeField] private XRBaseController controllerDevice;
 
 

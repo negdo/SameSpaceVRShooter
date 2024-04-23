@@ -10,26 +10,32 @@ public class CalibrationPositionHolder : MonoBehaviour
     private Vector3 playerPositionCalibration = new Vector3(0, 0, 0);
     private Quaternion playerRotationCalibration = new Quaternion(0, 0, 0, 0);
 
-    private void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this);
-
-        SceneManager.sceneLoaded += OnSceneLoaded;
+    private void Awake() {
+        if (Instance != null) {
+            Destroy(gameObject);
+            return;
+        } else {
+            Instance = this;
+            DontDestroyOnLoad(this);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "MultiplayerScene")
-        {
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (scene.name == "MultiplayerScene") {
             GameObject NewPlayer = GameObject.Find("XR Origin (XR Rig)");
-            if (NewPlayer != null)
-            {
+            if (NewPlayer != null) {
+                NewPlayer.transform.position = playerPositionCalibration;
+                NewPlayer.transform.rotation = playerRotationCalibration;
+                Debug.Log("Calibration Position Loaded");
+            }
+        } else if (scene.name == "MainMenu") {
+            GameObject NewPlayer = GameObject.Find("XR Origin (XR Rig)");
+            if (NewPlayer != null) {
                 NewPlayer.transform.position = playerPositionCalibration;
                 NewPlayer.transform.rotation = playerRotationCalibration;
                 Debug.Log("Calibration Position Loaded");
@@ -37,18 +43,12 @@ public class CalibrationPositionHolder : MonoBehaviour
         }
     }
 
-    public void updatePlayerPosition()
-    {
+    public void updatePlayerPosition() {
         GameObject OldPlayer = GameObject.Find("XR Origin (XR Rig)");
-        if (OldPlayer != null)
-        {
+        if (OldPlayer != null) {
             playerPositionCalibration = OldPlayer.transform.position;
             playerRotationCalibration = OldPlayer.transform.rotation;
             Debug.Log("Calibration Position Updated");
         }
     }
-
-
-
-
 }

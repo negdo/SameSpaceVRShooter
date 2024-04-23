@@ -25,7 +25,7 @@ public class LevelEditorMenu : MonoBehaviour {
     }
 
     void ToggleMenu(InputAction.CallbackContext obj) {
-        if (GameOperator.Singleton.gameState.Value != State.Lobby) {
+        if (GameOperator.Singleton.gameState.Value == State.Game) {
             menuOpen = false;
         } else {
             menuOpen = !menuOpen;
@@ -34,6 +34,4 @@ public class LevelEditorMenu : MonoBehaviour {
         Cursor.SetActive(menuOpen);
         SpawnPoint.SetActive(menuOpen);
     }
-
-
 }

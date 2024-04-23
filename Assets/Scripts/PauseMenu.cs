@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject Canvas;
     [SerializeField] GameObject CameraObject;
+    [SerializeField] ButtonAreaCalibrate buttonAreaCalibrate;
     [SerializeField] InputActionReference SettingsButtonAction;
     [SerializeField] float distance = 0.5f;
     private bool showMenu = false;
@@ -29,6 +30,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnSettingsButton() {
         if (showMenu) {
+            buttonAreaCalibrate.StopCalibration();
             Canvas.SetActive(false);
             showMenu = false;
         } else {
