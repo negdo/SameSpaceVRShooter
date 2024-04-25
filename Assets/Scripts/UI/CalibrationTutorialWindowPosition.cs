@@ -21,6 +21,12 @@ public class CalibrationTutorialWindowPosition : MonoBehaviour
 
     private void Start() {
         cameraTransform = Camera.main.transform;
+        
+        if (JustLoaded.justLoaded) {
+            JustLoaded.justLoaded = false;
+        } else {
+            gameObject.SetActive(false);
+        }
     }
 
     private void Update() {
@@ -33,4 +39,8 @@ public class CalibrationTutorialWindowPosition : MonoBehaviour
             gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, newTransform.rotation, 0.01f);
         }
     }
+}
+
+public static class JustLoaded {
+    public static bool justLoaded = true;
 }
