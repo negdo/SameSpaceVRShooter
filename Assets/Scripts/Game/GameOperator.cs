@@ -13,12 +13,27 @@ public class GameOperator : NetworkBehaviour
     private NetworkVariable<int> killsTeam1 = new NetworkVariable<int>(0);
     public GameObject[] startingPoints;
     public NetworkVariable<float> timeLeft = new NetworkVariable<float>(0);
-    public NetworkVariable<int> gameMode = new NetworkVariable<int>(GameMode.TeamDeathmatch);
+    public NetworkVariable<int> gameMode = new NetworkVariable<int>(GameMode.KingOfTheHill);
     private float timeGame = 180;
+    private ControlPoint controlPoint;
 
 
     void Start() {
         Singleton = this;
+
+        NetworkManager.Singleton.OnServerStarted += onNetworkSpawn;
+    }
+
+    private void onNetworkSpawn() {
+        if (IsServer) {
+            gameMode.Value = SceneLoader.gameMode;
+            Debug.Log("Game mode: " + SceneLoader.gameMode);
+
+            if (gameMode.Value == GameMode.KingOfTheHill) {
+                Debug.Log("Game mode is king of the hill");
+                controlPoint = FindObjectOfType<ControlPoint>();
+            }
+        }
     }
 
     public void CheckStartGame() {
@@ -162,8 +177,14 @@ public class GameOperator : NetworkBehaviour
         }
     }
 
-    public int[] getKills() {
-        return new int[] {killsTeam0.Value, killsTeam1.Value};
+    public int[] getPoints() {
+        if (gameMode.Value == GameMode.TeamDeathmatch) {
+            return new int[] {killsTeam0.Value, killsTeam1.Value};
+        } else if (gameMode.Value == GameMode.KingOfTheHill) {
+            return controlPoint.getPoints();
+        } else {
+            return new int[] {0, 0};
+        }
     }
 
     public void AddKillToOtherTeam(int team) {
@@ -175,9 +196,6 @@ public class GameOperator : NetworkBehaviour
         }
     }
         
-
-
-
 }
 
 

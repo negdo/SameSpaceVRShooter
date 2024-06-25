@@ -4,14 +4,14 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using Unity.Netcode;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject Canvas;
-    [SerializeField] GameObject CameraObject;
     [SerializeField] ButtonAreaCalibrate buttonAreaCalibrate;
     [SerializeField] InputActionReference SettingsButtonAction;
-    [SerializeField] float distance = 0.5f;
+    [SerializeField] GameObject leftRay;
+    [SerializeField] GameObject rightRay;
     private bool showMenu = false;
 
 
@@ -33,16 +33,32 @@ public class PauseMenu : MonoBehaviour
             buttonAreaCalibrate.StopCalibration();
             Canvas.SetActive(false);
             showMenu = false;
+            leftRay.SetActive(false);
+            rightRay.SetActive(false);
         } else {
             Canvas.SetActive(true);
             showMenu = true;
-
-            Vector3 newPostion = CameraObject.transform.position;
-            newPostion += CameraObject.transform.forward * distance;
-
-            transform.position = newPostion;
-            transform.rotation = CameraObject.transform.rotation;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+            leftRay.SetActive(true);
+            rightRay.SetActive(true);
         }
+    }
+
+
+    public void OnResumeButton() {
+        OnSettingsButton();
+    }
+
+    public void OnCalibrateButton() {
+        buttonAreaCalibrate.OnButtonClick();
+    }
+
+    public void OnMenuButton() {
+        Debug.Log("Menu button pressed");
+        
+        // destroy the network manager
+        NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+
+        SceneLoader.LoadMainMenu();
     }
 }

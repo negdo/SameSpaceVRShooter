@@ -41,7 +41,7 @@ MonoBehaviour:
     m_Bits: 191
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 225
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0

@@ -148,8 +148,9 @@ public class LevelComponentGrabable : Grabable
             return; // check if isEnabled in parent class
         }
 
-        // delete object
-        DeleteObjectServerRpc();
+        if (EnableDelete) {
+            DeleteObjectServerRpc();
+        }
     }
 
     [ServerRpc]
