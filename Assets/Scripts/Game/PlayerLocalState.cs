@@ -93,9 +93,7 @@ public class PlayerLocalState : MonoBehaviour
 
 
         } else if (state == PlayerState.Spectating) {
-            
-
-
+            playerHintText.text = "";
         }
     }
 

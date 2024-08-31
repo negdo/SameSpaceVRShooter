@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CalibrationTutorialWindowPosition : WindowFloater
-{
+public class CalibrationTutorialWindowPosition : WindowFloater {
 
     private void Start() {
         cameraTransform = Camera.main.transform;

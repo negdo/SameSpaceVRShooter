@@ -135,6 +135,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "hideinstructions",
+                    "type": "Button",
+                    "id": "91fa25dc-0947-4072-b238-3da71c3b121a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -212,6 +221,83 @@
                     "processors": "",
                     "groups": "",
                     "action": "Joystick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec658aea-2f11-4fc8-b2ca-a504ae2100b3",
+                    "path": "<XRController>{RightHand}/joystick",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ceef4534-844e-4f9c-a059-d76cf3942496",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25b1bda8-4e7a-4c0d-a458-9d476d39f07d",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0fd4187e-1c40-486d-97c1-501537544c80",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "495a4158-87ca-43b5-8eff-23bcf785f2e9",
+                    "path": "<XRController>{LeftHand}/{TriggerButton}",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0122512b-32f5-4d8c-bb51-155ce656e92e",
+                    "path": "<XRController>{RightHand}/{GripButton}",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e36fa476-5b61-4d76-9d76-557b367a825a",
+                    "path": "<XRController>{LeftHand}/{GripButton}",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=1,tapCount=3,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hideinstructions",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

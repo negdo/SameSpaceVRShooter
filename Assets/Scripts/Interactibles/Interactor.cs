@@ -23,11 +23,9 @@ public class Interactor : MonoBehaviour
     private Grabable lastGrabable = null;
 
     private void OnTriggerEnter(Collider other) {
-        if (!isGrabbing)
-        {
+        if (!isGrabbing) {
             Grabable grabable = other.GetComponent<Grabable>();
-            if (grabable != null)
-            {
+            if (grabable != null) {
                 HapticFeedbackInArea();
             }
         }

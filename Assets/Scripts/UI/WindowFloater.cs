@@ -17,13 +17,19 @@ public class WindowFloater : MonoBehaviour {
     }
 
     private void Update() {
-        Transform newTransform = GetTransform();
-        float distance = Vector3.Distance(gameObject.transform.position, newTransform.position);
-        float angle = Quaternion.Angle(gameObject.transform.rotation, newTransform.rotation);
+        // Transform newTransform = GetTransform();
+
+        Vector3 newPosition = cameraTransform.position + cameraTransform.forward * 1.5f;
+        Quaternion newRotation = Quaternion.LookRotation(newPosition - cameraTransform.position);
+        newPosition = new Vector3(newPosition.x, cameraTransform.position.y, newPosition.z);
+        newRotation = Quaternion.Euler(0, newRotation.eulerAngles.y, 0);
+
+        float distance = Vector3.Distance(gameObject.transform.position, newPosition);
+        float angle = Quaternion.Angle(gameObject.transform.rotation, newRotation);
 
         if (distance > 0.5f || angle > 30.0f) {
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newTransform.position, 0.01f);
-            gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, newTransform.rotation, 0.01f);
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, 0.01f);
+            gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, newRotation, 0.01f);
         }
     }
 }

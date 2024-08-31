@@ -10,7 +10,8 @@ public class SceneLoader : MonoBehaviour
     public static string host_ip = "";
     public static bool isHost = true;
     public static bool isServer = false;
-    public static int gameMode = GameMode.KingOfTheHill;
+    public static bool isSpectator = false;
+    public static int gameMode = GameMode.TeamDeathmatch;
 
     public static void LoadMultiplayerSceneHost() {
         Debug.Log("Loading Multiplayer Scene as Host");

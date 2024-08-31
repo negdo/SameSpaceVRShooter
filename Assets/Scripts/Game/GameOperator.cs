@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 public class GameOperator : NetworkBehaviour
 {
     public static GameOperator Singleton { get; private set; }
+    public UnityEvent GameStartEvent;
     public NetworkVariable<int> gameState = new NetworkVariable<int>(State.Lobby);
     private NetworkPlayer[] players;
     private NetworkVariable<int> killsTeam0 = new NetworkVariable<int>(0);
     private NetworkVariable<int> killsTeam1 = new NetworkVariable<int>(0);
     public GameObject[] startingPoints;
     public NetworkVariable<float> timeLeft = new NetworkVariable<float>(0);
-    public NetworkVariable<int> gameMode = new NetworkVariable<int>(GameMode.KingOfTheHill);
+    public NetworkVariable<int> gameMode = new NetworkVariable<int>(GameMode.TeamDeathmatch);
     private float timeGame = 180;
     private ControlPoint controlPoint;
 
@@ -46,7 +48,7 @@ public class GameOperator : NetworkBehaviour
             // check if all players are ready
             bool allReady = true;
             foreach (NetworkPlayer player in players) {
-                if (player.state.Value != PlayerState.Ready) {
+                if (player.state.Value != PlayerState.Ready || player.state.Value == PlayerState.Spectating) {
                     allReady = false;
                     break;
                 }
@@ -124,6 +126,9 @@ public class GameOperator : NetworkBehaviour
         foreach (StartingPoint startingPoint in startingPoints) {
             startingPoint.SetStateGame();
         }
+
+        // start game event	
+        GameStartEvent.Invoke();
     }
 
 

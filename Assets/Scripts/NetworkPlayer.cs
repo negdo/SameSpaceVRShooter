@@ -24,7 +24,7 @@ public class NetworkPlayer : NetworkBehaviour
         if (IsServer) {
             health.Value = maxHealth;
 
-            SetPlayerState(PlayerState.NotReady);
+            InitPlayerStateClientRpc();
         }
     }
 
@@ -208,8 +208,15 @@ public class NetworkPlayer : NetworkBehaviour
         // called on server
         if (IsServer) {
             this.state.Value = state;
+            Debug.Log("Set player state 3: " + state);
             SetPlayerStateClientRpc(state);
         } 
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    private void SetPlayerStateServerRpc(int state) {
+        Debug.Log("Set player state server rpc");
+        SetPlayerState(state);
     }
 
     [ClientRpc]
@@ -219,6 +226,30 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    public void InitPlayerStateClientRpc() {
+        if (IsOwner) {
+            int initState = SceneLoader.isSpectator ? PlayerState.Spectating : PlayerState.NotReady;
+            SetPlayerStateServerRpc(initState);
+            if (initState == PlayerState.Spectating) {
+                Debug.Log("Spectating");
+                SetSpectatorClientRpc();
+                SetSpectatorServerRpc();
+            }
+        }
+    }
+
+    [ClientRpc]
+    public void SetSpectatorClientRpc() {
+        NetworkPlayerRepresentation networkPlayerRepresentation = GetComponent<NetworkPlayerRepresentation>();
+        networkPlayerRepresentation.SetSpectator();
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    public void SetSpectatorServerRpc() {
+        NetworkPlayerRepresentation networkPlayerRepresentation = GetComponent<NetworkPlayerRepresentation>();
+        networkPlayerRepresentation.SetSpectator();
+    }
 }
 
 public static class PlayerState {

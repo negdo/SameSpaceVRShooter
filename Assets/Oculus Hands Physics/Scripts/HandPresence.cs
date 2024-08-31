@@ -1,21 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class HandPresence : MonoBehaviour
-{
+public class HandPresence : NetworkBehaviour {
     public InputDeviceCharacteristics controllerCharacteristics;    
     private InputDevice targetDevice;
     public Animator handAnimator;
 
-    void Start()
-    {
+    void Start() {
         TryInitialize();
     }
 
-    void TryInitialize()
-    {
+    void TryInitialize() {
         List<InputDevice> devices = new List<InputDevice>();
 
         InputDevices.GetDevicesWithCharacteristics(controllerCharacteristics, devices);
@@ -25,36 +23,25 @@ public class HandPresence : MonoBehaviour
         }
     }
 
-    void UpdateHandAnimation()
-    {
-        if(targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
-        {
+    void UpdateHandAnimation() {
+        if(targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue)) {
             handAnimator.SetFloat("Trigger", triggerValue);
-        }
-        else
-        {
+        } else {
             handAnimator.SetFloat("Trigger", 0);
         }
 
-        if (targetDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue))
-        {
+        if (targetDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue)) {
             handAnimator.SetFloat("Grip", gripValue);
-        }
-        else
-        {
+        } else {
             handAnimator.SetFloat("Grip", 0);
         }
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(!targetDevice.isValid)
-        {
+    void Update() {
+        if(!targetDevice.isValid) {
             TryInitialize();
-        }
-        else
-        {
+        } if (IsOwner) {
             UpdateHandAnimation();
         }
     }
