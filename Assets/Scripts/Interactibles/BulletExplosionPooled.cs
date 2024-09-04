@@ -8,8 +8,9 @@ public class ExplosionPooled : MonoBehaviour, IPooledObject {
     private float lifeTime = 1f;
     private NetworkPooledObject networkPooledObject;
 
-    private void Start() {
+    private void OnEnable() {
         networkPooledObject = gameObject.GetComponent<NetworkPooledObject>();
+        gameObject.GetComponent<ParticleSystem>().Play();
     }
 
     public void ResetState() {

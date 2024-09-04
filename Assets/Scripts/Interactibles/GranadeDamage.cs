@@ -32,10 +32,8 @@ public class GranadeDamage : Granade {
                             hitPlayers.Add(hitPlayer);
                         }
                     }
-
                 }
             }
-
 
             foreach (NetworkPlayer player in hitPlayers) {
                 // Multiply y component by 0.5 as players head is far from the ground
