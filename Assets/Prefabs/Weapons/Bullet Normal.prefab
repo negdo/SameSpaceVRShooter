@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3446039658
+  GlobalObjectIdHash: 3876898663
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -197,6 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  maxLifeTime: 2
+  damage: 30
   explosionHitPrefab: {fileID: 4021103657954561961, guid: 0208b0243d40e5c4d8188e7584b1b943, type: 3}
 --- !u!135 &4825548322671143306
 SphereCollider:
