@@ -48,7 +48,7 @@ public class GameOperator : NetworkBehaviour
             // check if all players are ready
             bool allReady = true;
             foreach (NetworkPlayer player in players) {
-                if (player.state.Value != PlayerState.Ready || player.state.Value == PlayerState.Spectating) {
+                if (player.state.Value != PlayerState.Ready && player.state.Value != PlayerState.Spectating) {
                     allReady = false;
                     break;
                 }

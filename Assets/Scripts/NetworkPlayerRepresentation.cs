@@ -13,10 +13,16 @@ public class NetworkPlayerRepresentation : NetworkBehaviour {
     bool skipUpdates = false;
 
     public void SetSpectator() {
+        head.position = new Vector3(0, -100, 0);
+        leftHand.position = new Vector3(0, -100, 0);
+        rightHand.position = new Vector3(0, -100, 0);
+        body.position = new Vector3(0, -100, 0);
+        
         head.gameObject.SetActive(false);
         leftHand.gameObject.SetActive(false);
         rightHand.gameObject.SetActive(false);
         body.gameObject.SetActive(false);
+
         skipUpdates = true;
     }
 

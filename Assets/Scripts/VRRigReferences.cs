@@ -17,8 +17,23 @@ public class VRRigReferences : MonoBehaviour
     
 
 
-    private void Awake()
-    {
+    private void Awake() {
         Singelton = this;
+    }
+
+    void Start() {
+        int initState = SceneLoader.isSpectator ? PlayerState.Spectating : PlayerState.NotReady;
+
+        if (initState == PlayerState.Spectating) {
+            Transform newTransform = new GameObject().transform;
+            newTransform.position = new Vector3(0, -100, 0);
+
+            root = newTransform;
+            head = newTransform;
+            leftHand = newTransform;
+            rightHand = newTransform;
+            leftHandPhysics = newTransform;
+            rightHandPhysics = newTransform;
+        }
     }
 }

@@ -33,7 +33,6 @@ public class TimerUI : MonoBehaviour
     private void setPointsText() {
         
         int[] kills = GameOperator.Singleton.getPoints();
-        Debug.Log("Setting points text: " + kills[0] + " " + kills[1]);
         if (kills[0] != pointsTeam0) {
             pointsTeam0 = kills[0];
             pointsTeam0Text.text = kills[0].ToString();

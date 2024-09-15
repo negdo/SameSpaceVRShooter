@@ -42,7 +42,7 @@ Material:
     - _size: 0.5
     - _thickness: 0.02
     m_Colors:
-    - _ObjectPosition: {r: 0, g: 2.9176, b: -5.17, a: 0}
+    - _ObjectPosition: {r: 0, g: 1.1176, b: 0.00000027828645, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7679545632787880482
 MonoBehaviour:

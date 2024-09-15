@@ -233,7 +233,6 @@ public class NetworkPlayer : NetworkBehaviour
             SetPlayerStateServerRpc(initState);
             if (initState == PlayerState.Spectating) {
                 Debug.Log("Spectating");
-                SetSpectatorClientRpc();
                 SetSpectatorServerRpc();
             }
         }
@@ -249,6 +248,7 @@ public class NetworkPlayer : NetworkBehaviour
     public void SetSpectatorServerRpc() {
         NetworkPlayerRepresentation networkPlayerRepresentation = GetComponent<NetworkPlayerRepresentation>();
         networkPlayerRepresentation.SetSpectator();
+        SetSpectatorClientRpc();
     }
 }
 
