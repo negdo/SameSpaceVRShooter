@@ -12,6 +12,9 @@ public class SceneLoader : MonoBehaviour
     public static bool isServer = false;
     public static bool isSpectator = false;
     public static int gameMode = GameMode.TeamDeathmatch;
+    public static int testType = 0;
+
+    public static string player_name = "Player";
 
     public static void LoadMultiplayerSceneHost() {
         Debug.Log("Loading Multiplayer Scene as Host");
@@ -50,6 +53,12 @@ public class SceneLoader : MonoBehaviour
         }
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public static void LoadTargetTest() {
+        Debug.Log("Loading Target Test");
+
+        SceneManager.LoadScene("TargetTestScene");
     }
 
 

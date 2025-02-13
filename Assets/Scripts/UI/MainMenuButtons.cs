@@ -4,9 +4,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainMenuButtons : MonoBehaviour {
+    [SerializeField] private GameObject nameScreen;
     [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject JoinScreen;
     [SerializeField] private GameObject HostScreen;
+    [SerializeField] private GameObject TestScreen;
 
     public void OnJoinButtonClicked() {
         mainScreen.SetActive(false);
@@ -28,5 +30,15 @@ public class MainMenuButtons : MonoBehaviour {
         mainScreen.SetActive(false);
         JoinScreen.SetActive(true);
         SceneLoader.isSpectator = true;
+    }
+
+    public void OnTestButtonClicked() {
+        mainScreen.SetActive(false);
+        TestScreen.SetActive(true);
+    }
+
+    public void OnNameButtonClicked() {
+        nameScreen.SetActive(false);
+        mainScreen.SetActive(true);
     }
 }

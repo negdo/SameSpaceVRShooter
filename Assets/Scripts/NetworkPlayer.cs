@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using Unity.Collections;
+
 
 public class NetworkPlayer : NetworkBehaviour
 {
@@ -12,8 +15,10 @@ public class NetworkPlayer : NetworkBehaviour
     public NetworkVariable<float> health = new NetworkVariable<float>();
     public NetworkVariable<int> kills = new NetworkVariable<int>();
     public NetworkVariable<int> deaths = new NetworkVariable<int>();
+    public NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>("Default name");
 
     [SerializeField] private StartingPointHeadCollider startingPointHeadColliders;
+    [SerializeField] private TextMeshPro playerNameText;
 
 
     public float GetHealth() { return health.Value; }
@@ -226,6 +231,19 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+    [ServerRpc (RequireOwnership = false)]
+    private void SetPlayerNameServerRpc(string name) {
+        playerName.Value = name;
+        SetPlayerNameClientRpc(name);
+    }
+
+    [ClientRpc]
+    private void SetPlayerNameClientRpc(string name) {
+        if (IsOwner) {
+            playerNameText.text = name;
+        }
+    }
+
     [ClientRpc]
     public void InitPlayerStateClientRpc() {
         if (IsOwner) {
@@ -235,6 +253,7 @@ public class NetworkPlayer : NetworkBehaviour
                 Debug.Log("Spectating");
                 SetSpectatorServerRpc();
             }
+            SetPlayerNameServerRpc(SceneLoader.player_name);
         }
     }
 

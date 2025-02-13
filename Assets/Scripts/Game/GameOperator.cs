@@ -16,8 +16,10 @@ public class GameOperator : NetworkBehaviour
     public GameObject[] startingPoints;
     public NetworkVariable<float> timeLeft = new NetworkVariable<float>(0);
     public NetworkVariable<int> gameMode = new NetworkVariable<int>(GameMode.TeamDeathmatch);
+    public NetworkVariable<bool> isAR = new NetworkVariable<bool>(false);
     private float timeGame = 180;
     private ControlPoint controlPoint;
+    private PositionLogger positionLogger = new PositionLogger();
 
 
     void Start() {
@@ -71,6 +73,9 @@ public class GameOperator : NetworkBehaviour
     private void StartGame() {
         // called on server
         Debug.Log("Starting game");
+
+        // start new log file
+        positionLogger.StartLogger();
 
         // get all LevelComponentGrabable objects in the scene
         LevelComponentGrabable[] grabables = FindObjectsOfType<LevelComponentGrabable>();
@@ -139,6 +144,7 @@ public class GameOperator : NetworkBehaviour
                 if (timeLeft.Value == 0) {
                     EndGame();
                 }
+                positionLogger.RunLogger();
             }
         }
     }
@@ -146,6 +152,10 @@ public class GameOperator : NetworkBehaviour
     private void EndGame() {
         // called on server
         Debug.Log("Ending game");
+
+        // end log file
+        positionLogger.EndLogger();
+        
         gameState.Value = State.End;
 
         // get all LevelComponentGrabable objects in the scene
@@ -200,6 +210,32 @@ public class GameOperator : NetworkBehaviour
             killsTeam1.Value++;
         }
     }
+
+    public void SetAR(bool ar) {
+        isAR.Value = ar;
+
+        // after 1 call update ar
+        StartCoroutine(UpdateARWithDelay());
+    }
+
+    [ClientRpc]
+    public void SetSpectatorClientRpc() {
+        // get component in parent ARSwitcher
+        UpdateAR();
+    }
+
+    private IEnumerator UpdateARWithDelay() {
+        yield return new WaitForSeconds(1);
+        UpdateAR();
+        SetSpectatorClientRpc();
+    }
+
+    public void UpdateAR() {
+        ARSwitcher arSwitcher = FindObjectOfType<ARSwitcher>();
+        arSwitcher.SetAR(isAR.Value);
+    }
+
+
         
 }
 

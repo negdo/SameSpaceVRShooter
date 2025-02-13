@@ -55,10 +55,11 @@ public class PauseMenu : MonoBehaviour
     public void OnMenuButton() {
         Debug.Log("Menu button pressed");
         
-        // destroy the network manager
-        NetworkManager.Singleton.Shutdown();
-        Destroy(NetworkManager.Singleton.gameObject);
-
+        // destroy the network manager if it exists
+        if (NetworkManager.Singleton != null) {
+            NetworkManager.Singleton.Shutdown();
+            Destroy(NetworkManager.Singleton.gameObject);
+        }
         SceneLoader.LoadMainMenu();
     }
 }

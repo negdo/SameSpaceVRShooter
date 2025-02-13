@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "Hold(duration=1)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ResetAccTest",
+                    "type": "Button",
+                    "id": "2654854c-410f-41e4-915a-d5c6e819ff05",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -64,6 +73,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CalibrationFloor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "86b62b82-fc7f-4d96-a2ab-7af962b6adff",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "Hold(duration=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ResetAccTest",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

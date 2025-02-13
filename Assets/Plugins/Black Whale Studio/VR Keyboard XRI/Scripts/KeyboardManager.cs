@@ -26,7 +26,7 @@ namespace Keyboard
         [SerializeField] private KeyChannel keyChannel;
 
         [Header("Shift/Caps Lock Button")] 
-        [SerializeField] internal bool autoCapsAtStart = true;
+        [SerializeField] internal bool autoCapsAtStart = false;
         [SerializeField] private Image buttonImage;
         [SerializeField] private Sprite defaultSprite;
         [SerializeField] private Sprite activeSprite;
@@ -42,6 +42,7 @@ namespace Keyboard
         [SerializeField] private TMP_InputField outputField;
         [SerializeField] private Button enterButton;
         [SerializeField] private int maxCharacters = 15;
+        [SerializeField] private bool isIP = true;
 
         private bool isFirstKeyPress = true;
 
@@ -62,30 +63,51 @@ namespace Keyboard
 
         private void KeyPress(string key)
         {
-            if (key == "←") {
-                // delete last character
-                if (outputField.text.Length > 10)
+            if (isIP) {
+                if (key == "←") {
+                    // delete last character
+                    if (outputField.text.Length > 10)
+                    {
+                        outputField.text = outputField.text.Substring(0, outputField.text.Length - 1);
+                    }
+                } else if (outputField.text.Length < 3)
                 {
-                    outputField.text = outputField.text.Substring(0, outputField.text.Length - 1);
+                    outputField.text = "192.168.1." + key;
+                } else if (outputField.text.Length < 13)
+                {
+                    outputField.text = outputField.text + key;
                 }
-            } else if (outputField.text.Length < 3)
-            {
+                else
+                {
+                    outputField.text = "192.168.1." + key;
+                }
 
-                outputField.text = "192.168.1." + key;
-            } else if (outputField.text.Length < 13)
-            {
-                outputField.text = outputField.text + key;
-            }
-            else
-            {
-                outputField.text = "192.168.1." + key;
-            }
+                if (isFirstKeyPress)
+                {
+                    isFirstKeyPress = false;
+                    keyChannel.onFirstKeyPress.Invoke();
+                }
+            } else {
+                if (key == "←")
+                {
+                    // delete last character
+                    if (outputField.text.Length > 0)
+                    {
+                        outputField.text = outputField.text.Substring(0, outputField.text.Length - 1);
+                    }
+                }
+                else if (outputField.text.Length < maxCharacters)
+                {
+                    outputField.text += key;
+                }
 
-            if (isFirstKeyPress)
-            {
-                isFirstKeyPress = false;
-                keyChannel.onFirstKeyPress.Invoke();
+                if (isFirstKeyPress)
+                {
+                    isFirstKeyPress = false;
+                    keyChannel.onFirstKeyPress.Invoke();
+                }
             }
+            
     
         }
 

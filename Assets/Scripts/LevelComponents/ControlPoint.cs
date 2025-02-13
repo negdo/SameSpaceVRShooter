@@ -11,7 +11,6 @@ public class ControlPoint : NetworkBehaviour {
     [SerializeField] private Material circleMaterial;
 
     private NetworkVariable<float> captureProgress = new NetworkVariable<float>(0f);
-    private bool capturePaused = false;
     private NetworkVariable<int> teamOnPoint = new NetworkVariable<int>(-1);
     private NetworkVariable<float> team1Points = new NetworkVariable<float>(0);
     private NetworkVariable<float> team2Points = new NetworkVariable<float>(0);

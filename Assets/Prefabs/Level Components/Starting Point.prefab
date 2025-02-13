@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkObject: {fileID: 6149455729958528428}
+  EnableDelete: 1
   grabEnabled:
     m_InternalValue: 1
   isGrabbed:

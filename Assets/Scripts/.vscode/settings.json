@@ -1,0 +1,14 @@
+{
+    "files.exclude": {
+        "**/.meta": true
+    },
+    "search.exclude": {
+        "**/.meta": true
+    },
+    "files.watcherExclude": {
+        "**/.meta": true
+    },
+    "explorer.autoRevealExclude": {
+        "**/.meta": true
+    }
+}
