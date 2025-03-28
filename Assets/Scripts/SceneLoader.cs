@@ -14,7 +14,7 @@ public class SceneLoader : MonoBehaviour
     public static int gameMode = GameMode.TeamDeathmatch;
     public static int testType = 0;
 
-    public static string player_name = "Player";
+    public static string player_name = "Missing Player Name in Scene Loader";
 
     public static void LoadMultiplayerSceneHost() {
         Debug.Log("Loading Multiplayer Scene as Host");

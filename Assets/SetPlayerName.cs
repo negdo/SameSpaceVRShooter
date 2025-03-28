@@ -1,12 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class SetPlayerName : MonoBehaviour
+public class SetPlayerName : NetworkBehaviour
 {
-    [SerializeField] private TMPro.TextMeshProUGUI nameText;
-    public void SetPlayerNameFun()
+    [SerializeField] private TMPro.TextMeshPro nameText;
+    [SerializeField] private NetworkPlayer networkPlayer;
+    
+    // on network spawn, set the player name
+    public override void OnNetworkSpawn()
     {
-        SceneLoader.player_name = nameText.text;
+        // delay 1 second to make sure the player name is set
+        StartCoroutine(SetPlayerNameDelayed());
+    }
+
+    private IEnumerator SetPlayerNameDelayed()
+    {
+        yield return new WaitForSeconds(1);
+        nameText.text = networkPlayer.playerName.Value.ToString();
     }
 }

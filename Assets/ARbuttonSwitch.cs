@@ -14,4 +14,9 @@ public class ARbuttonSwitch : MonoBehaviour
 
 
     }
+
+    public void ServerStartGame() {
+        GameOperator gameOperator = FindObjectOfType<GameOperator>();
+        gameOperator.ServerStartGame();
+    }
 }

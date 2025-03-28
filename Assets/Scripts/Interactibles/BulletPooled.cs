@@ -17,7 +17,6 @@ public class BulletPooled : NetworkBehaviour, IPooledObject, IMovement {
     [SerializeField] private GameObject explosionHitPrefab;
 
     private NetworkPooledObject networkPooledObject;
-
     private void Start() {
         networkPooledObject = gameObject.GetComponent<NetworkPooledObject>();
     }

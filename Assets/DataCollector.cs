@@ -12,47 +12,56 @@ public class DataCollector : NetworkBehaviour
     string filePath = "";
     GameData gameData;
     PlayerData playerData;
-    private List<GameData> gameDataList;
+    GameOperator gameOperator;
+    private GameDataWrapper gameDataWrapper;
     // Start is called before the first frame update
     void Start()
     {
-        // get current time to use it as filename
-        if (IsServer) {
-            filePath = Application.persistentDataPath + "/gamedata-" +System.DateTime.Now.ToString("-MM-dd-HH-mm-ss") + ".json";
-            gameData.players = new PlayerData[4];
-            StartCoroutine(SaveDataRoutine());
-        }
+        filePath = Application.persistentDataPath + "/gamedata-" +System.DateTime.Now.ToString("MM-dd-HH-mm-ss") + ".json";
+        gameDataWrapper = new GameDataWrapper();
+        gameOperator = FindObjectOfType<GameOperator>();
+        StartCoroutine(SaveDataRoutine());
+
     }
 
     IEnumerator SaveDataRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2f);
             SaveData();
         }
     }
 
      void SaveData()
     {
+        NetworkPlayer[] players = FindObjectsOfType<NetworkPlayer>();
         // Update data (example: increasing score)
         gameData = new GameData();
+        gameData.players = new PlayerData[players.Length];
         gameData.time = Time.time;
         gameData.isAr = ! SkyPanels.activeSelf;
-        gameData.gamestate = 0;
+        gameData.gamestate = gameOperator.gameState.Value;
+        
 
-        foreach (NetworkPlayer player in FindObjectsOfType<NetworkPlayer>()) {
-            playerData = new PlayerData();
-            playerData.playerName = player.playerName.Value.ToString();
-            playerData.BodyPosition = player.transform.position;
-            playerData.BodyRotation = player.transform.rotation.eulerAngles;
-            gameData.players[0] = playerData;
+        for (int i = 0; i < players.Length; i++) {   
+            NetworkPlayer player = players[i];
+            // get child component named "Body" from player
+            GameObject body = player.transform.Find("Body").gameObject;
+            playerData = new PlayerData
+            {
+                playerName = player.playerName.Value.ToString(),
+                BodyPosition = body.transform.position,
+                BodyRotation = body.transform.rotation.eulerAngles,
+                playerState = player.state.Value
+            };
+            gameData.players[i] = playerData;
         }
 
-        gameDataList.Add(gameData);
+        gameDataWrapper.gameDataList.Add(gameData);
 
         // Serialize to JSON
-        string json = JsonUtility.ToJson(gameData, true);
+        string json = JsonUtility.ToJson(gameDataWrapper, true);
 
         // Write to file
         File.WriteAllText(filePath, json);
@@ -82,3 +91,29 @@ public class GameData
     public PlayerData[] players;
 }
 
+[System.Serializable]
+public class GameDataWrapper {
+    public List<GameData> gameDataList;
+
+    public GameDataWrapper() {
+        gameDataList = new List<GameData>();
+    }
+}
+
+
+[System.Serializable]
+public class ActivitiyData
+{
+    public string playerName;
+    public string action;
+    public float time;
+}
+
+[System.Serializable]
+public class ActivityDataWrapper {
+    public List<ActivitiyData> activityDataList;
+
+    public ActivityDataWrapper() {
+        activityDataList = new List<ActivitiyData>();
+    }
+}

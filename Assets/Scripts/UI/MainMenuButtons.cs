@@ -10,6 +10,9 @@ public class MainMenuButtons : MonoBehaviour {
     [SerializeField] private GameObject HostScreen;
     [SerializeField] private GameObject TestScreen;
 
+// text mesh pro ui input
+    [SerializeField] private TMPro.TMP_InputField nameInput;
+
     public void OnJoinButtonClicked() {
         mainScreen.SetActive(false);
         JoinScreen.SetActive(true);
@@ -38,6 +41,8 @@ public class MainMenuButtons : MonoBehaviour {
     }
 
     public void OnNameButtonClicked() {
+        SceneLoader.player_name = nameInput.text;
+        Debug.Log("Player name set to: " + SceneLoader.player_name);
         nameScreen.SetActive(false);
         mainScreen.SetActive(true);
     }

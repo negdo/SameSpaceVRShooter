@@ -240,7 +240,7 @@ public class NetworkPlayer : NetworkBehaviour
     [ClientRpc]
     private void SetPlayerNameClientRpc(string name) {
         if (IsOwner) {
-            playerNameText.text = name;
+            playerNameText.text = name.ToString();
         }
     }
 

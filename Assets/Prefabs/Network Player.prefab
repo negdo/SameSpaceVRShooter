@@ -258,7 +258,40 @@ MonoBehaviour:
   deaths:
     m_InternalValue: 0
   playerName:
-    m_InternalValue: 
+    m_InternalValue:
+      utf8LengthInBytes: 12
+      bytes:
+        offset0000:
+          byte0000: 68
+          byte0001: 101
+          byte0002: 102
+          byte0003: 97
+          byte0004: 117
+          byte0005: 108
+          byte0006: 116
+          byte0007: 32
+          byte0008: 110
+          byte0009: 97
+          byte0010: 109
+          byte0011: 101
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0016: 0
+        byte0017: 0
+        byte0018: 0
+        byte0019: 0
+        byte0020: 0
+        byte0021: 0
+        byte0022: 0
+        byte0023: 0
+        byte0024: 0
+        byte0025: 0
+        byte0026: 0
+        byte0027: 0
+        byte0028: 0
+        byte0029: 0
   startingPointHeadColliders: {fileID: 1241728255467359782}
   playerNameText: {fileID: 4726032732002562009}
 --- !u!114 &2287064394516311039
@@ -380,7 +413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.1324}
   m_SizeDelta: {x: 1, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8143797798215308586
@@ -510,7 +543,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 2.1785722, z: 0, w: 2.675314}
+  m_margin: {x: 0, y: 2.4186337, z: 0, w: 2.530298}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -555,6 +588,7 @@ GameObject:
   - component: {fileID: 7220659620662708026}
   - component: {fileID: 4726032732002562009}
   - component: {fileID: 2912505945252740313}
+  - component: {fileID: 3681913151409401275}
   m_Layer: 0
   m_Name: NameTag
   m_TagString: Untagged
@@ -578,7 +612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0531}
+  m_AnchoredPosition: {x: 0, y: 0.1985}
   m_SizeDelta: {x: 1, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7220659620662708026
@@ -643,7 +677,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Playerr
+  m_text: Missing Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -706,7 +740,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 2.1785722, z: 0, w: 2.675314}
+  m_margin: {x: 0, y: 2.4115574, z: 0, w: 2.5368707}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -727,6 +761,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dddeead04f3a7bf479a49592b3fb6f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3681913151409401275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156850929681289901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee7054ab62516640adcd45f41d7e672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 4726032732002562009}
+  networkPlayer: {fileID: 4437150517809404329}
 --- !u!1 &5804787759365362185
 GameObject:
   m_ObjectHideFlags: 0

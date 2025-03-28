@@ -19,7 +19,8 @@ public class GameOperator : NetworkBehaviour
     public NetworkVariable<bool> isAR = new NetworkVariable<bool>(false);
     private float timeGame = 180;
     private ControlPoint controlPoint;
-    private PositionLogger positionLogger = new PositionLogger();
+
+    [SerializeField] DataCollector dataCollector;
 
 
     void Start() {
@@ -37,7 +38,9 @@ public class GameOperator : NetworkBehaviour
                 Debug.Log("Game mode is king of the hill");
                 controlPoint = FindObjectOfType<ControlPoint>();
             }
+
         }
+        dataCollector.enabled = !IsClient && !IsHost;
     }
 
     public void CheckStartGame() {
@@ -70,12 +73,19 @@ public class GameOperator : NetworkBehaviour
         }
     }
 
+    public void ServerStartGame() {
+        // called on server
+        if (IsServer) {
+            gameState.Value = State.Game;
+            StartGame();
+        }
+    }
+
     private void StartGame() {
         // called on server
         Debug.Log("Starting game");
 
         // start new log file
-        positionLogger.StartLogger();
 
         // get all LevelComponentGrabable objects in the scene
         LevelComponentGrabable[] grabables = FindObjectsOfType<LevelComponentGrabable>();
@@ -93,6 +103,7 @@ public class GameOperator : NetworkBehaviour
 
 
         // assign each player to a spawn point
+        players = FindObjectsOfType<NetworkPlayer>();
         for (int i = 0; i < players.Length; i++) {
             int team = 0;
             float closestPointDistance = Mathf.Infinity;
@@ -144,7 +155,6 @@ public class GameOperator : NetworkBehaviour
                 if (timeLeft.Value == 0) {
                     EndGame();
                 }
-                positionLogger.RunLogger();
             }
         }
     }
@@ -152,9 +162,6 @@ public class GameOperator : NetworkBehaviour
     private void EndGame() {
         // called on server
         Debug.Log("Ending game");
-
-        // end log file
-        positionLogger.EndLogger();
         
         gameState.Value = State.End;
 

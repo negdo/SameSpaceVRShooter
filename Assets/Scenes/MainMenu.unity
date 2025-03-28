@@ -1561,6 +1561,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 1386349990}
+  nameInput: {fileID: 0}
 --- !u!1 &152151387
 GameObject:
   m_ObjectHideFlags: 0
@@ -2471,6 +2472,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 0}
+  nameInput: {fileID: 0}
 --- !u!114 &268176203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6143,6 +6145,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 1386349990}
+  nameInput: {fileID: 0}
 --- !u!114 &680793785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8411,6 +8414,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 0}
+  nameInput: {fileID: 0}
 --- !u!1 &869945085
 GameObject:
   m_ObjectHideFlags: 0
@@ -12252,6 +12256,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 0}
+  nameInput: {fileID: 0}
 --- !u!114 &1221089743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15304,6 +15309,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 0}
+  nameInput: {fileID: 0}
 --- !u!114 &1455748336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20016,7 +20022,6 @@ GameObject:
   - component: {fileID: 1881871631}
   - component: {fileID: 1881871630}
   - component: {fileID: 1881871629}
-  - component: {fileID: 1881871632}
   - component: {fileID: 1881871633}
   m_Layer: 0
   m_Name: Save
@@ -20089,18 +20094,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1881871632}
-        m_TargetAssemblyTypeName: SetPlayerName, Assembly-CSharp
-        m_MethodName: SetPlayerNameFun
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1881871633}
         m_TargetAssemblyTypeName: MainMenuButtons, Assembly-CSharp
         m_MethodName: OnNameButtonClicked
@@ -20151,19 +20144,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881871626}
   m_CullTransparentMesh: 1
---- !u!114 &1881871632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881871626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dee7054ab62516640adcd45f41d7e672, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 38816816}
 --- !u!114 &1881871633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20181,6 +20161,7 @@ MonoBehaviour:
   JoinScreen: {fileID: 2062839943}
   HostScreen: {fileID: 1181675139}
   TestScreen: {fileID: 1386349990}
+  nameInput: {fileID: 1157538896}
 --- !u!1 &1888933179
 GameObject:
   m_ObjectHideFlags: 0
